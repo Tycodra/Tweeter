@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
-import edu.byu.cs.tweeter.client.model.backgroundTask.GetUserTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -85,6 +85,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
         presenter = new FollowingPresenter(this);
+        presenter.loadMoreItems(user);
+
         return view;
     }
 
@@ -191,12 +193,12 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
         private final List<User> users = new ArrayList<>();
 
-        /**
-         * Creates an instance and loads the first page of following data.
-         */
-        FollowingRecyclerViewAdapter() {
-            loadMoreItems();
-        }
+//        /**
+//         * Creates an instance and loads the first page of following data.
+//         */
+//        FollowingRecyclerViewAdapter() {
+//            loadMoreItems();
+//        }
 
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays
