@@ -4,7 +4,7 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter implements UserService.LoginObserver {
+public class LoginPresenter implements UserService.UserObserver {
     View view;
 
     public LoginPresenter(View view) {
@@ -42,7 +42,7 @@ public class LoginPresenter implements UserService.LoginObserver {
             service.login(username, password, this);
         }
         else {
-
+            view.displayErrorMessage(validationMessage);
         }
     }
 
