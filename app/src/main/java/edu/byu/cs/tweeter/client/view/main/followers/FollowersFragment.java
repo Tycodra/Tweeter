@@ -171,8 +171,6 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
 
         private final List<User> users = new ArrayList<>();
 
-//        private boolean isLoading = false;
-
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays
          * and notifies the RecyclerView that items have been added.
