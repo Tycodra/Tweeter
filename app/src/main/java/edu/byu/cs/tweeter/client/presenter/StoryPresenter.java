@@ -8,8 +8,7 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FeedPresenter {
-
+public class StoryPresenter {
     public interface View {
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
@@ -18,6 +17,7 @@ public class FeedPresenter {
 
         void addMoreItems(List<Status> statusList);
     }
+
     private View view;
     private StatusService statusService;
     private UserService userService;
@@ -28,7 +28,7 @@ public class FeedPresenter {
 
     private Status lastStatus;
 
-    public FeedPresenter(View view) {
+    public StoryPresenter(View view) {
         this.view = view;
         statusService = new StatusService();
         userService = new UserService();
@@ -51,9 +51,10 @@ public class FeedPresenter {
             isLoading = true;
             view.setLoadingFooter(isLoading);
 
-            statusService.loadMoreFeed(user, PAGE_SIZE, lastStatus, new GetFeedObserver());
+            statusService.loadMoreStory(user, PAGE_SIZE, lastStatus, new GetStoryObserver());
         }
     }
+
     public class GetUserObserver implements UserService.GetUserObserver {
 
         @Override
@@ -77,7 +78,7 @@ public class FeedPresenter {
             view.displayUser(user);
         }
     }
-    public class GetFeedObserver implements StatusService.FeedObserver {
+    public class GetStoryObserver implements StatusService.StoryObserver {
         @Override
         public void displayError(String message) {
             view.displayMessage(message);
@@ -98,4 +99,3 @@ public class FeedPresenter {
         }
     }
 }
-
