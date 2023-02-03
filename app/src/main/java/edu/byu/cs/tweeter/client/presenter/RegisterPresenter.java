@@ -42,10 +42,10 @@ public class RegisterPresenter implements UserService.UserObserver{
 
     public String validateRegistration(String firstName, String lastName, String alias, String password, ImageView imageToUpload) {
         if (firstName.length() == 0) {
-            return "First Name cannot be empty.";
+            return "Firstname cannot be empty.";
         }
         if (lastName.length() == 0) {
-            return "Last Name cannot be empty.";
+            return "Lastname cannot be empty.";
         }
         if (alias.length() == 0) {
             return "Alias cannot be empty.";
@@ -76,10 +76,9 @@ public class RegisterPresenter implements UserService.UserObserver{
     }
 
     @Override
-    public void handleException(Exception exception) {
-        view.displayErrorMessage(exception.getMessage());
+    public void handleException(String message) {
+        view.displayErrorMessage(message);
     }
-
 
     public interface View {
 
@@ -89,5 +88,4 @@ public class RegisterPresenter implements UserService.UserObserver{
 
         void registerSuccessful(User user, AuthToken authToken);
     }
-
 }

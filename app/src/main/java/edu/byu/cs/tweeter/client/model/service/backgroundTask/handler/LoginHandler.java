@@ -39,7 +39,7 @@ public class LoginHandler extends Handler {
             observer.handleFailure("Failed to login: " + message);
         } else if (msg.getData().containsKey(LoginTask.EXCEPTION_KEY)) {
             Exception ex = (Exception) msg.getData().getSerializable(LoginTask.EXCEPTION_KEY);
-            observer.handleException(ex);
+            observer.handleException(ex.getMessage());
         }
     }
 }

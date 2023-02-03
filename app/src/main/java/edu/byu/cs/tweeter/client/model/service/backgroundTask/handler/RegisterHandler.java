@@ -38,7 +38,7 @@ public class RegisterHandler extends Handler {
             observer.handleFailure("Failed to register: " + message);
         } else if (msg.getData().containsKey(RegisterTask.EXCEPTION_KEY)) {
             Exception ex = (Exception) msg.getData().getSerializable(RegisterTask.EXCEPTION_KEY);
-            observer.handleException(ex);
+            observer.handleException(ex.getMessage());
         }
     }
 }

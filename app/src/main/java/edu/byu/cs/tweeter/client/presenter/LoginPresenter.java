@@ -23,8 +23,8 @@ public class LoginPresenter implements UserService.UserObserver {
     }
 
     @Override
-    public void handleException(Exception exception) {
-        view.displayInfoMessage(exception.getMessage()); // TODO
+    public void handleException(String message) {
+        view.displayErrorMessage(message);
     }
 
     public interface View {

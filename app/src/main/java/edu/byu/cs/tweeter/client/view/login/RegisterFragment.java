@@ -2,13 +2,8 @@ package edu.byu.cs.tweeter.client.view.login;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import java.util.Base64;
-import java.io.ByteArrayOutputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.presenter.RegisterPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
@@ -99,7 +87,6 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
         return view;
     }
 
-    // Get image if uploaded from gallery.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -110,31 +97,6 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
             imageUploaderButton.setText(R.string.afterUploadPicture);
         }
     }
-
-//    public void validateRegistration() {
-//        if (firstName.getText().length() == 0) {
-//            throw new IllegalArgumentException("First Name cannot be empty.");
-//        }
-//        if (lastName.getText().length() == 0) {
-//            throw new IllegalArgumentException("Last Name cannot be empty.");
-//        }
-//        if (alias.getText().length() == 0) {
-//            throw new IllegalArgumentException("Alias cannot be empty.");
-//        }
-//        if (alias.getText().charAt(0) != '@') {
-//            throw new IllegalArgumentException("Alias must begin with @.");
-//        }
-//        if (alias.getText().length() < 2) {
-//            throw new IllegalArgumentException("Alias must contain 1 or more characters after the @.");
-//        }
-//        if (password.getText().length() == 0) {
-//            throw new IllegalArgumentException("Password cannot be empty.");
-//        }
-//
-//        if (imageToUpload.getDrawable() == null) {
-//            throw new IllegalArgumentException("Profile image must be uploaded.");
-//        }
-//    }
 
     @Override
     public void displayInfoMessage(String message) {

@@ -37,14 +37,16 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFeedTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.presenter.FeedPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
  * Implements the "Feed" tab.
  */
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements FeedPresenter.View {
     private static final String LOG_TAG = "FeedFragment";
     private static final String USER_KEY = "UserKey";
 
@@ -56,6 +58,8 @@ public class FeedFragment extends Fragment {
     private User user;
 
     private FeedRecyclerViewAdapter feedRecyclerViewAdapter;
+    private FeedPresenter presenter;
+
 
     /**
      * Creates an instance of the fragment and places the target user in an arguments
@@ -92,7 +96,22 @@ public class FeedFragment extends Fragment {
 
         feedRecyclerView.addOnScrollListener(new FeedRecyclerViewPaginationScrollListener(layoutManager));
 
+        presenter = new FeedPresenter(this);
+        ////presenter.loadMoreItems(user); ?????
+
         return view;
+    }
+
+    @Override
+    public void displayUser(User user) {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        startActivity(intent);
+    }
+
+    @Override
+    public void displayMessage(String message) {
+
     }
 
     /**
@@ -123,11 +142,8 @@ public class FeedFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GetUserTask getUserTask = new GetUserTask(Cache.getInstance().getCurrUserAuthToken(),
-                            userAlias.getText().toString(), new GetUserHandler());
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(getUserTask);
-                    Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
+                    AuthToken authToken = Cache.getInstance().getCurrUserAuthToken();
+                    presenter.getUser(userAlias.getText().toString(), authToken);
                 }
             });
         }
