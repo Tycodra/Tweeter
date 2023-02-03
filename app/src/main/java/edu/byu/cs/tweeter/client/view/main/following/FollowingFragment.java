@@ -143,8 +143,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AuthToken authToken = Cache.getInstance().getCurrUserAuthToken();
-                    presenter.getUser(userAlias.getText().toString(), authToken);
+                    presenter.getUser(userAlias.getText().toString());
                 }
             });
         }

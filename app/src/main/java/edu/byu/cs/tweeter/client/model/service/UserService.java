@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.client.model.service;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
@@ -14,8 +15,8 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class UserService {
 
-    public void getUser(String userAlias, AuthToken authToken, GetUserObserver getUserObserver) {
-        GetUserTask getUserTask = new GetUserTask(authToken, userAlias, new GetUserHandler(getUserObserver));
+    public void getUser(String userAlias, GetUserObserver getUserObserver) {
+        GetUserTask getUserTask = new GetUserTask(Cache.getInstance().getCurrUserAuthToken(), userAlias, new GetUserHandler(getUserObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getUserTask);
     }

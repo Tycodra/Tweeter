@@ -29,8 +29,8 @@ public class FollowersPresenter {
         followService = new FollowService();
         userService = new UserService();
     }
-    public void getUser(String userAlias, AuthToken authToken) {
-        userService.getUser(userAlias, authToken, new GetUserObserver());
+    public void getUser(String userAlias) {
+        userService.getUser(userAlias, new GetUserObserver());
     }
     public boolean hasMorePages() {
         return hasMorePages;

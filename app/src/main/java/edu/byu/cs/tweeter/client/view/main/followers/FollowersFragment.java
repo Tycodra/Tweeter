@@ -105,13 +105,12 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
 
     @Override
     public void displayMessage(String message) {
-        Toast.makeText(getContext(), "Failed to get following: " + message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void addMoreItems(List<User> followers) {
         followersRecyclerViewAdapter.addItems(followers);
-
     }
 
     @Override
@@ -146,8 +145,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AuthToken authToken = Cache.getInstance().getCurrUserAuthToken();
-                    presenter.getUser(userAlias.getText().toString(), authToken);
+                    presenter.getUser(userAlias.getText().toString());
                 }
             });
         }
@@ -173,7 +171,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
 
         private final List<User> users = new ArrayList<>();
 
-        private boolean isLoading = false;
+//        private boolean isLoading = false;
 
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays

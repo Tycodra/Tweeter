@@ -41,8 +41,8 @@ public class FollowingPresenter {
         return isLoading;
     }
 
-    public void getUser(String userAlias, AuthToken authToken) {
-        userService.getUser(userAlias, authToken, new GetUserObserver());
+    public void getUser(String userAlias) {
+        userService.getUser(userAlias, new GetUserObserver());
     }
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
