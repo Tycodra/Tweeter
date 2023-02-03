@@ -17,6 +17,8 @@ public class MainPresenter {
         void enableFollowButton(boolean enableButton);
 
         void follow(boolean follow);
+
+        void logout();
     }
     private View view;
     private UserService userService;
@@ -37,7 +39,31 @@ public class MainPresenter {
     public void follow(User selectedUser) {
         userService.follow(selectedUser, new FollowObserver());
     }
-    
+    public void logout() {
+        userService.logout(new LogoutObserver());
+    }
+    public class LogoutObserver implements UserService.LogoutObserver {
+
+        @Override
+        public void handleSuccess(User user, AuthToken authToken) {
+            
+        }
+
+        @Override
+        public void handleFailure(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void handleException(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void logout() {
+            view.logout();
+        }
+    }
     public class UnfollowObserver implements UserService.UnfollowObserver {
 
         @Override
@@ -47,12 +73,12 @@ public class MainPresenter {
 
         @Override
         public void handleFailure(String message) {
-
+            view.displayMessage(message);
         }
 
         @Override
         public void handleException(String message) {
-
+            view.displayMessage(message);
         }
 
         @Override
@@ -74,12 +100,12 @@ public class MainPresenter {
 
         @Override
         public void handleFailure(String message) {
-
+            view.displayMessage(message);
         }
 
         @Override
         public void handleException(String message) {
-
+            view.displayMessage(message);
         }
 
         @Override

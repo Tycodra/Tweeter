@@ -8,12 +8,14 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.FollowHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollowerHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LoginHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LogoutHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.UnfollowHandler;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
@@ -63,6 +65,12 @@ public class UserService {
         executor.execute(followTask);
     }
 
+    public void logout(LogoutObserver observer) {
+        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(observer));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(logoutTask);
+    }
+
     public interface UserObserver {
         void handleSuccess(User user, AuthToken authToken);
         void handleFailure(String message);
@@ -84,5 +92,9 @@ public class UserService {
         void follow(boolean follow);
 
         void enableFollowButton(boolean b);
+    }
+    public interface LogoutObserver extends UserObserver {
+
+        void logout();
     }
 }
