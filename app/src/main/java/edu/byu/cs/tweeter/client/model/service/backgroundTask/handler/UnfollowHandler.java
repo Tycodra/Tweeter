@@ -31,4 +31,3 @@ public class UnfollowHandler extends Handler {
         observer.enableFollowButton(true);
     }
 }
-

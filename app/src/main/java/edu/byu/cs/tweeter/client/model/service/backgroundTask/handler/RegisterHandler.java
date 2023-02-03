@@ -32,7 +32,6 @@ public class RegisterHandler extends Handler {
             Cache.getInstance().setCurrUserAuthToken(authToken);
 
             observer.handleSuccess(registeredUser, authToken);
-
         } else if (msg.getData().containsKey(RegisterTask.MESSAGE_KEY)) {
             String message = msg.getData().getString(RegisterTask.MESSAGE_KEY);
             observer.handleFailure("Failed to register: " + message);
@@ -42,4 +41,3 @@ public class RegisterHandler extends Handler {
         }
     }
 }
-

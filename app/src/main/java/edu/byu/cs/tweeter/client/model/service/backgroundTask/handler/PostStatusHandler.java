@@ -3,13 +3,11 @@ package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
 
 public class PostStatusHandler extends Handler {
     private StatusService.PostStatusObserver observer;
@@ -34,4 +32,3 @@ public class PostStatusHandler extends Handler {
         }
     }
 }
-

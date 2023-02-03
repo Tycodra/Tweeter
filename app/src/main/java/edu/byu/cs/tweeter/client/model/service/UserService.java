@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
@@ -12,13 +14,14 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.FollowHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersCountHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingCountHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollowerHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LoginHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LogoutHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.UnfollowHandler;
-import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -45,6 +48,12 @@ public class UserService {
         executor.execute(registerTask);
     }
 
+    public void logout(LogoutObserver observer) {
+        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(observer));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(logoutTask);
+    }
+
     public void isFollower(User selectedUser, IsFollowerObserver observer) {
         IsFollowerTask isFollowerTask = new IsFollowerTask(Cache.getInstance().getCurrUserAuthToken(),
                 Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler(observer));
@@ -65,10 +74,20 @@ public class UserService {
         executor.execute(followTask);
     }
 
-    public void logout(LogoutObserver observer) {
-        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(observer));
+    public void updateFollowers(User selectedUser, UpdateFollowersObserver updateFollowsObserver) {
+        // Get count of most recently selected user's followers.
+        GetFollowersCountTask followersCountTask = new GetFollowersCountTask(Cache.getInstance().getCurrUserAuthToken(),
+                selectedUser, new GetFollowersCountHandler(updateFollowsObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(logoutTask);
+        executor.execute(followersCountTask);
+    }
+
+    public void updateFollowing(User selectedUser, UpdateFollowingObserver updateFollowingObserver) {
+        // Get count of most recently selected user's followees (who they are following)
+        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(Cache.getInstance().getCurrUserAuthToken(),
+                selectedUser, new GetFollowingCountHandler(updateFollowingObserver));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(followingCountTask);
     }
 
     public interface UserObserver {
@@ -79,6 +98,10 @@ public class UserService {
 
     public interface GetUserObserver extends UserObserver {
         void displayUser(User user);
+    }
+    public interface LogoutObserver extends UserObserver {
+
+        void logout();
     }
     public interface IsFollowerObserver extends UserObserver {
         void setIsFollowerButton(boolean isFollower);
@@ -93,8 +116,11 @@ public class UserService {
 
         void enableFollowButton(boolean b);
     }
-    public interface LogoutObserver extends UserObserver {
+    public interface UpdateFollowingObserver extends UserObserver {
+        void setNumFollowing(int count);
+    }
+    public interface UpdateFollowersObserver extends UserObserver {
 
-        void logout();
+        void setNumFollowers(int count);
     }
 }

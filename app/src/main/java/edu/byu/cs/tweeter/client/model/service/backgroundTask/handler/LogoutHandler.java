@@ -30,4 +30,3 @@ public class LogoutHandler extends Handler {
         }
     }
 }
-

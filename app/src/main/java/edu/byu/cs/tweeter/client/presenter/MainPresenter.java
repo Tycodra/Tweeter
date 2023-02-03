@@ -22,6 +22,10 @@ public class MainPresenter {
         void logout();
 
         void cancelPostToast();
+
+        void setFollowerCount(String s);
+
+        void setFollowingCount(String s);
     }
     private View view;
     private UserService userService;
@@ -31,6 +35,10 @@ public class MainPresenter {
         this.view = view;
         userService = new UserService();
         statusService = new StatusService();
+    }
+    public void updateFollows(User selectedUser) {
+        userService.updateFollowers(selectedUser, new UpdateFollowersObserver());
+        userService.updateFollowing(selectedUser, new UpdateFollowingObserver());
     }
 
     public void isFollower(User selectedUser) {
@@ -47,6 +55,52 @@ public class MainPresenter {
     }
     public void logout() {
         userService.logout(new LogoutObserver());
+    }
+    public class UpdateFollowingObserver implements UserService.UpdateFollowingObserver {
+
+        @Override
+        public void handleSuccess(User user, AuthToken authToken) {
+
+        }
+
+        @Override
+        public void handleFailure(String message) {
+
+        }
+
+        @Override
+        public void handleException(String message) {
+
+        }
+
+        @Override
+        public void setNumFollowing(int count) {
+            String followingCount = String.valueOf(count);
+            view.setFollowingCount("Following: " + followingCount);
+        }
+    }
+    public class UpdateFollowersObserver implements UserService.UpdateFollowersObserver {
+
+        @Override
+        public void handleSuccess(User user, AuthToken authToken) {
+            
+        }
+
+        @Override
+        public void handleFailure(String message) {
+
+        }
+
+        @Override
+        public void handleException(String message) {
+
+        }
+
+        @Override
+        public void setNumFollowers(int count) {
+            String followerCount = String.valueOf(count);
+            view.setFollowerCount("Followers: " + followerCount);
+        }
     }
     public class PostStatusObserver implements StatusService.PostStatusObserver {
 
