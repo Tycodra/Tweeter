@@ -8,9 +8,6 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class FeedPresenter {
 
-
-   
-
     public interface View {
 
         void displayUser(User user);
@@ -20,6 +17,11 @@ public class FeedPresenter {
     private View view;
     private StatusService statusService;
     private UserService userService;
+
+    private boolean isLoading = false;
+    private boolean hasMorePages;
+
+//    private Status lastStatus;
     public FeedPresenter(View view) {
         this.view = view;
         statusService = new StatusService();
@@ -28,6 +30,22 @@ public class FeedPresenter {
 
     public void getUser(String userAlias, AuthToken authToken) {
         userService.getUser(userAlias, authToken, new GetUserObserver());
+    }
+    public boolean hasMorePages() {
+        return hasMorePages;
+    }
+    public void setHasMorePages(boolean hasMorePages) {
+        this.hasMorePages = hasMorePages;
+    }
+    public boolean isLoading() {
+        return isLoading;
+    }
+    public void loadMoreItems() {
+        if (!isLoading) {
+            isLoading = true;
+//            view.setLoadingFooter(isLoading);
+//            statusService.loadMoreStatuses(user, PAGE_SIZE, lastStatus, new )
+        }
     }
     public class GetUserObserver implements UserService.GetUserObserver {
 

@@ -124,7 +124,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
      * The ViewHolder for the RecyclerView that displays the Following data.
      */
     private class FollowingHolder extends RecyclerView.ViewHolder {
-
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
@@ -336,5 +335,4 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             }
         }
     }
-
 }

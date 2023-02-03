@@ -2,6 +2,8 @@ package edu.byu.cs.tweeter.client.view.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
@@ -80,7 +85,18 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
             public void onClick(View view) {
                 // Register and move to MainActivity.
                 errorView.setText(null);
-                presenter.initiateRegister(firstName.getText().toString(), lastName.getText().toString(), alias.getText().toString(), password.getText().toString(), imageToUpload);
+                String imageString = "";
+
+                if (imageToUpload.getDrawable() != null) {
+                    Bitmap image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                    byte[] imageBytes = bos.toByteArray();
+
+                    // Intentionally, Use the java Base64 encoder so it is compatible with M4.
+                    imageString = Base64.getEncoder().encodeToString(imageBytes);
+                }
+                presenter.initiateRegister(firstName.getText().toString(), lastName.getText().toString(), alias.getText().toString(), password.getText().toString(), imageString);
             }
         });
 
