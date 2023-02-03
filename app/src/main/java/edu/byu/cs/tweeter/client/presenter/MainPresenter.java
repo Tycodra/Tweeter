@@ -4,6 +4,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
+import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class MainPresenter {
@@ -19,6 +20,8 @@ public class MainPresenter {
         void follow(boolean follow);
 
         void logout();
+
+        void cancelPostToast();
     }
     private View view;
     private UserService userService;
@@ -39,8 +42,33 @@ public class MainPresenter {
     public void follow(User selectedUser) {
         userService.follow(selectedUser, new FollowObserver());
     }
+    public void postStatus(Status newStatus) {
+        statusService.postStatus(newStatus, new PostStatusObserver());
+    }
     public void logout() {
         userService.logout(new LogoutObserver());
+    }
+    public class PostStatusObserver implements StatusService.PostStatusObserver {
+
+        @Override
+        public void displaySuccess(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void displayError(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void displayException(String message) {
+
+        }
+
+        @Override
+        public void cancelPostToast() {
+            view.cancelPostToast();
+        }
     }
     public class LogoutObserver implements UserService.LogoutObserver {
 

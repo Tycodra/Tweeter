@@ -171,10 +171,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
 
         try {
             Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), getFormattedDateTime(), parseURLs(post), parseMentions(post));
-            PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
-                    newStatus, new PostStatusHandler());
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(statusTask);
+            presenter.postStatus(newStatus);
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage(), ex);
             Toast.makeText(this, "Failed to post the status because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -311,6 +308,11 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     public void logout() {
         logOutToast.cancel();
         logoutUser();
+    }
+
+    @Override
+    public void cancelPostToast() {
+        postingToast.cancel();
     }
 
 //    private class LogoutHandler extends Handler {

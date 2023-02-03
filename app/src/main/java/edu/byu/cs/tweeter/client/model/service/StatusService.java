@@ -7,13 +7,17 @@ import java.util.concurrent.Executors;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFeedTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetStoryTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFeedHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetStoryHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PostStatusHandler;
+import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.client.view.main.story.StoryFragment;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService {
+
     public interface FeedObserver {
         void displayError(String message);
         void displayException(String message);
@@ -23,6 +27,19 @@ public class StatusService {
         void displayError(String message);
         void displayException(String message);
         void addStatuses(List<Status> statusList, boolean hasMorePages);
+    }
+    public interface PostStatusObserver {
+        void displaySuccess(String message);
+        void displayError(String message);
+        void displayException(String message);
+
+        void cancelPostToast();
+    }
+    public void postStatus(Status newStatus, PostStatusObserver observer) {
+        PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
+                newStatus, new PostStatusHandler(observer));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(statusTask);
     }
     public void loadMoreFeed(User user, int pageSize, Status lastStatus, FeedObserver feedObserver) {
         GetFeedTask getFeedTask = new GetFeedTask(Cache.getInstance().getCurrUserAuthToken(),
