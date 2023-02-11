@@ -36,10 +36,12 @@ public abstract class BackgroundTask implements Runnable{
             sendSuccessMessage();
 
         } catch (Exception ex) {
-            Log.e(LOG_TAG, "Failed to get followees", ex);
+            logTaskException(ex);
             sendExceptionMessage(ex);
         }
     }
+
+    protected abstract void logTaskException(Exception ex);
 
     protected abstract void runTask();
 

@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,16 +15,12 @@ import edu.byu.cs.tweeter.util.Pair;
 /**
  * Background task that retrieves a page of other users being followed by a specified user.
  */
-public class GetFollowingTask extends BackgroundTask {
+public class GetFollowingTask extends AuthenticatedTask {
     private static final String LOG_TAG = "GetFollowingTask";
     public static final String MORE_PAGES_KEY = "more-pages";
     public static final String FOLLOWEES_KEY = "followees";
 
-
-    /**
-     * Auth token for logged-in user.
-     */
-    private AuthToken authToken;
+    
     /**
      * The user whose following is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
@@ -44,14 +41,18 @@ public class GetFollowingTask extends BackgroundTask {
 
     public GetFollowingTask(AuthToken authToken, User targetUser, int limit, User lastFollowee,
                             Handler messageHandler) {
-        super(messageHandler);
-        this.authToken = authToken;
+        super(messageHandler, authToken);
         this.targetUser = targetUser;
         this.limit = limit;
         this.lastFollowee = lastFollowee;
     }
     private Pair<List<User>, Boolean> getFollowees() {
         return getFakeData().getPageOfUsers((User) lastFollowee, limit, targetUser);
+    }
+
+    @Override
+    protected void logTaskException(Exception ex) {
+        Log.e(LOG_TAG, "Failed to get followees", ex);
     }
 
     @Override
