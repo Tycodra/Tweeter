@@ -3,13 +3,9 @@ package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.FakeData;
 
 public abstract class BackgroundTask implements Runnable{
@@ -48,7 +44,7 @@ public abstract class BackgroundTask implements Runnable{
     private void sendSuccessMessage() {
         Bundle msgBundle = createBundle(true);
 
-        loadMessage(msgBundle);
+        loadMessageBundle(msgBundle);
 
         sendMessage(msgBundle);
     }
@@ -65,7 +61,7 @@ public abstract class BackgroundTask implements Runnable{
         messageHandler.sendMessage(msg);
     }
 
-    protected abstract void loadMessage(Bundle msgBundle);
+    protected abstract void loadMessageBundle(Bundle msgBundle);
 
     private void sendFailedMessage(String message) {
         Bundle msgBundle = createBundle(false);
