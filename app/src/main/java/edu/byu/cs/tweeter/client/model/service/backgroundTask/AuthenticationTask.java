@@ -34,6 +34,8 @@ public abstract class AuthenticationTask extends BackgroundTask{
 
         authenticatedUser = authResult.getFirst();
         authToken = authResult.getSecond();
+
+        sendSuccessMessage();
     }
     protected abstract Pair<User, AuthToken> doAuthentication();
 

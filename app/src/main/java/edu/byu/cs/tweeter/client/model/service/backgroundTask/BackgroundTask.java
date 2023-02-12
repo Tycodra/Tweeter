@@ -28,7 +28,6 @@ public abstract class BackgroundTask implements Runnable{
     public void run() {
         try {
             runTask();
-            sendSuccessMessage();
         } catch (Exception ex) {
             logTaskException(ex);
             sendExceptionMessage(ex);
@@ -41,9 +40,7 @@ public abstract class BackgroundTask implements Runnable{
 
     public void sendSuccessMessage() {
         Bundle msgBundle = createBundle(true);
-
         loadMessageBundle(msgBundle);
-
         sendMessage(msgBundle);
     }
 
