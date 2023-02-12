@@ -12,7 +12,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 public abstract class PagedStatusTask extends PagedTask<Status> {
 
     protected PagedStatusTask(AuthToken authToken, User targetUser, int limit, Status lastItem, Handler messageHandler) {
-        super(messageHandler, authToken, targetUser, limit, lastItem);
+        super(authToken, targetUser, limit, lastItem, messageHandler);
     }
 
     @Override
@@ -20,4 +20,3 @@ public abstract class PagedStatusTask extends PagedTask<Status> {
         return items.stream().map(x -> x.user).collect(Collectors.toList());
     }
 }
-

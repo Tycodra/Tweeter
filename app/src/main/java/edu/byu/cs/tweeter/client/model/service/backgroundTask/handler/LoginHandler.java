@@ -6,10 +6,10 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.AuthenticationTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.AuthenticateTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -26,8 +26,8 @@ public class LoginHandler extends Handler {
     public void handleMessage(@NonNull Message msg) {
         boolean success = msg.getData().getBoolean(LoginTask.SUCCESS_KEY);
         if (success) {
-            User loggedInUser = (User) msg.getData().getSerializable(AuthenticationTask.USER_KEY);
-            AuthToken authToken = (AuthToken) msg.getData().getSerializable(AuthenticationTask.AUTH_TOKEN_KEY);
+            User loggedInUser = (User) msg.getData().getSerializable(AuthenticateTask.USER_KEY);
+            AuthToken authToken = (AuthToken) msg.getData().getSerializable(AuthenticateTask.AUTH_TOKEN_KEY);
 
             // Cache user session information
             Cache.getInstance().setCurrUser(loggedInUser);

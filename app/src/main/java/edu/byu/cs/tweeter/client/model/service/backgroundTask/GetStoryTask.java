@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 
 import android.os.Handler;
-import android.util.Log;
 
 import java.util.List;
 
@@ -14,17 +13,10 @@ import edu.byu.cs.tweeter.util.Pair;
  * Background task that retrieves a page of statuses from a user's story.
  */
 public class GetStoryTask extends PagedStatusTask {
-    private static final String LOG_TAG = "GetStoryTask";
-    public static final String STATUSES_KEY = "statuses";
 
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {
         super(authToken, targetUser, limit, lastStatus, messageHandler);
-    }
-
-    @Override
-    protected void logTaskException(Exception ex) {
-        Log.e(LOG_TAG, ex.getMessage(), ex);
     }
 
     @Override

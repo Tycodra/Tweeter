@@ -1,8 +1,6 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -11,14 +9,13 @@ import edu.byu.cs.tweeter.model.domain.User;
  * Background task that queries how many other users a specified user is following.
  */
 public class GetFollowingCountTask extends GetCountTask {
-    private static final String LOG_TAG = "GetFollowingCountTask";
-    public static final String COUNT_KEY = "count";
 
     public GetFollowingCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
-        super(messageHandler, authToken, targetUser);
+        super(authToken, targetUser, messageHandler);
     }
+
     @Override
-    protected void logTaskException(Exception ex) {
-        Log.e(LOG_TAG, "Failed to get following count", ex);
+    protected int runCountTask() {
+        return 20;
     }
 }
