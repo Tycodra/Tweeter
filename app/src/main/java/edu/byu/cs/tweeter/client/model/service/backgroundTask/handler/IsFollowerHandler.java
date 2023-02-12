@@ -6,12 +6,13 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 
 public class IsFollowerHandler extends Handler {
-    private UserService.IsFollowerObserver isFollowerObserver;
-    public IsFollowerHandler(UserService.IsFollowerObserver isFollowerObserver) {
+    private FollowService.IsFollowerObserver isFollowerObserver;
+    public IsFollowerHandler(FollowService.IsFollowerObserver isFollowerObserver) {
         super(Looper.getMainLooper());
         this.isFollowerObserver = isFollowerObserver;
     }
@@ -30,10 +31,10 @@ public class IsFollowerHandler extends Handler {
             }
         } else if (msg.getData().containsKey(IsFollowerTask.MESSAGE_KEY)) {
             String message = msg.getData().getString(IsFollowerTask.MESSAGE_KEY);
-            isFollowerObserver.handleFailure("Failed to determine following relationship: " + message);
+            isFollowerObserver.displayError("Failed to determine following relationship: " + message);
         } else if (msg.getData().containsKey(IsFollowerTask.EXCEPTION_KEY)) {
             Exception ex = (Exception) msg.getData().getSerializable(IsFollowerTask.EXCEPTION_KEY);
-            isFollowerObserver.handleException("Failed to determine following relationship because of exception: " + ex.getMessage());
+            isFollowerObserver.displayException("Failed to determine following relationship because of exception: " + ex.getMessage());
         }
     }
 }

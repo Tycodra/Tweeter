@@ -26,8 +26,8 @@ public class LoginHandler extends Handler {
     public void handleMessage(@NonNull Message msg) {
         boolean success = msg.getData().getBoolean(LoginTask.SUCCESS_KEY);
         if (success) {
-            User loggedInUser = (User) msg.getData().getSerializable(AuthenticateTask.USER_KEY);
-            AuthToken authToken = (AuthToken) msg.getData().getSerializable(AuthenticateTask.AUTH_TOKEN_KEY);
+            User loggedInUser = (User) msg.getData().getSerializable(LoginTask.USER_KEY);
+            AuthToken authToken = (AuthToken) msg.getData().getSerializable(LoginTask.AUTH_TOKEN_KEY);
 
             // Cache user session information
             Cache.getInstance().setCurrUser(loggedInUser);

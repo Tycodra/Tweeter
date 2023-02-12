@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
-    public void unfollow(boolean unfollow) {
+    public void unfollow() {
         updateSelectedUserFollowingAndFollowers();
         updateFollowButton(true);
         Toast.makeText(MainActivity.this, "Removing " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
-    public void follow(boolean follow) {
+    public void follow() {
         updateSelectedUserFollowingAndFollowers();
         updateFollowButton(false);
         Toast.makeText(MainActivity.this, "Adding " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();

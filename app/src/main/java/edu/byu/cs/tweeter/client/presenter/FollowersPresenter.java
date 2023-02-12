@@ -51,10 +51,10 @@ public class FollowersPresenter {
 
     public class GetUserObserver implements UserService.GetUserObserver {
 
-        @Override
-        public void handleSuccess(User user, AuthToken authToken) {
-            view.displayUser(user);
-        }
+//        @Override
+//        public void handleSuccess(User user, AuthToken authToken) {
+//            view.displayUser(user);
+//        }
 
         @Override
         public void handleFailure(String message) {
