@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.Pair;
 
@@ -41,7 +40,6 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
         return targetUser;
     }
 
-
     public PagedTask(Handler messageHandler, AuthToken authToken, User targetUser, int limit, T lastItem) {
         super(messageHandler, authToken);
         this.targetUser = targetUser;
@@ -57,6 +55,8 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
         Pair<List<T>, Boolean> pageOfItems = getItems();
         items = pageOfItems.getFirst();
         hasMorePages = pageOfItems.getSecond();
+
+        sendSuccessMessage();
     }
     @Override
     protected void loadMessageBundle(Bundle msgBundle) {
