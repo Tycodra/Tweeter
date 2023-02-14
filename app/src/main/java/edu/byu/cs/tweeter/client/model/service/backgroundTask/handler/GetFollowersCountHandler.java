@@ -1,34 +1,26 @@
 package edu.byu.cs.tweeter.client.model.service.backgroundTask.handler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 
-public class GetFollowersCountHandler extends Handler {
-    private UserService.UpdateFollowersObserver observer;
-    public GetFollowersCountHandler(UserService.UpdateFollowersObserver observer) {
-        super(Looper.getMainLooper());
-        this.observer = observer;
+public class GetFollowersCountHandler extends BackgroundTaskHandler<FollowService.UpdateFollowersObserver> {
+    public GetFollowersCountHandler(FollowService.UpdateFollowersObserver observer) {
+        super(observer);
     }
 
     @Override
-    public void handleMessage(@NonNull Message msg) {
-        boolean success = msg.getData().getBoolean(GetFollowersCountTask.SUCCESS_KEY);
-        if (success) {
-            int count = msg.getData().getInt(GetFollowersCountTask.COUNT_KEY);
-            observer.setNumFollowers(count);
-        } else if (msg.getData().containsKey(GetFollowersCountTask.MESSAGE_KEY)) {
-            String message = msg.getData().getString(GetFollowersCountTask.MESSAGE_KEY);
-            observer.handleFailure("Failed to get followers count: " + message);
-        } else if (msg.getData().containsKey(GetFollowersCountTask.EXCEPTION_KEY)) {
-            Exception ex = (Exception) msg.getData().getSerializable(GetFollowersCountTask.EXCEPTION_KEY);
-            observer.handleException("Failed to get followers count because of exception: " + ex.getMessage());
-        }
+    protected void handleSuccess(Bundle data, FollowService.UpdateFollowersObserver observer) {
+        int count = data.getInt(GetFollowersCountTask.COUNT_KEY);
+        observer.handleSuccess(count);
     }
 }
 

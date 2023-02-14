@@ -55,12 +55,6 @@ public class FeedPresenter {
         }
     }
     public class GetUserObserver implements UserService.GetUserObserver {
-
-//        @Override
-//        public void handleSuccess(User user, AuthToken authToken) {
-//            view.displayUser(user);
-//        }
-
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
@@ -76,18 +70,14 @@ public class FeedPresenter {
             view.displayMessage("Getting user's profile...");
             view.displayUser(user);
         }
+
+        @Override
+        public void handleSuccess() {
+            view.displayMessage("Getting user's profile...");
+//            view.displayUser(user);
+        }
     }
     public class GetFeedObserver implements StatusService.FeedObserver {
-        @Override
-        public void displayError(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayException(String message) {
-            view.displayMessage(message);
-        }
-
         @Override
         public void addStatuses(List<Status> statusList, boolean hasMorePages) {
             lastStatus = (statusList.size() > 0) ? statusList.get(statusList.size() -1) : null;
@@ -95,6 +85,16 @@ public class FeedPresenter {
             isLoading = false;
             view.setLoadingFooter(isLoading);
             view.addMoreItems(statusList);
+        }
+
+        @Override
+        public void handleFailure(String message) {
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void handleException(String message) {
+            view.displayMessage(message);
         }
     }
 }

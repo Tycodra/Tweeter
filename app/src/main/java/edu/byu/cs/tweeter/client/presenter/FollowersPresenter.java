@@ -50,12 +50,6 @@ public class FollowersPresenter {
     }
 
     public class GetUserObserver implements UserService.GetUserObserver {
-
-//        @Override
-//        public void handleSuccess(User user, AuthToken authToken) {
-//            view.displayUser(user);
-//        }
-
         @Override
         public void handleFailure(String message) {
 
@@ -70,23 +64,28 @@ public class FollowersPresenter {
         public void displayUser(User user) {
             view.displayUser(user);
         }
+
+        @Override
+        public void handleSuccess() {
+
+        }
     }
 
     private class GetFollowerObserver implements FollowService.FollowObserver {
-
-        @Override
-        public void displayError(String message) {
-            isLoading = false;
-            view.setLoadingFooter(isLoading);
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void displayException(String message) {
-            isLoading = false;
-            view.setLoadingFooter(isLoading);
-            view.displayMessage(message);
-        }
+//
+//        @Override
+//        public void displayError(String message) {
+//            isLoading = false;
+//            view.setLoadingFooter(isLoading);
+//            view.displayMessage(message);
+//        }
+//
+//        @Override
+//        public void displayException(String message) {
+//            isLoading = false;
+//            view.setLoadingFooter(isLoading);
+//            view.displayMessage(message);
+//        }
 
         @Override
         public void addFollows(List<User> follows, boolean hasMorePages) {
@@ -95,6 +94,20 @@ public class FollowersPresenter {
             isLoading = false;
             view.setLoadingFooter(isLoading);
             view.addMoreItems(follows);
+        }
+
+        @Override
+        public void handleFailure(String message) {
+            isLoading = false;
+            view.setLoadingFooter(isLoading);
+            view.displayMessage(message);
+        }
+
+        @Override
+        public void handleException(String message) {
+            isLoading = false;
+            view.setLoadingFooter(isLoading);
+            view.displayMessage(message);
         }
     }
 }

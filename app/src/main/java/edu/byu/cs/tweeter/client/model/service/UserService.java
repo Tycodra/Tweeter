@@ -19,6 +19,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LoginHandl
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LogoutHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -52,22 +53,6 @@ public class UserService {
         executor.execute(logoutTask);
     }
 
-    public void updateFollowers(User selectedUser, UpdateFollowersObserver updateFollowsObserver) {
-        // Get count of most recently selected user's followers.
-        GetFollowersCountTask followersCountTask = new GetFollowersCountTask(Cache.getInstance().getCurrUserAuthToken(),
-                selectedUser, new GetFollowersCountHandler(updateFollowsObserver));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(followersCountTask);
-    }
-
-    public void updateFollowing(User selectedUser, UpdateFollowingObserver updateFollowingObserver) {
-        // Get count of most recently selected user's followees (who they are following)
-        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(Cache.getInstance().getCurrUserAuthToken(),
-                selectedUser, new GetFollowingCountHandler(updateFollowingObserver));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(followingCountTask);
-    }
-
     public interface UserObserver {
         void handleSuccess(User user, AuthToken authToken);
         void handleFailure(String message);
@@ -79,11 +64,5 @@ public class UserService {
     }
     public interface LogoutObserver extends UserObserver {
         void logout();
-    }
-    public interface UpdateFollowingObserver extends UserObserver {
-        void setNumFollowing(int count);
-    }
-    public interface UpdateFollowersObserver extends UserObserver {
-        void setNumFollowers(int count);
     }
 }

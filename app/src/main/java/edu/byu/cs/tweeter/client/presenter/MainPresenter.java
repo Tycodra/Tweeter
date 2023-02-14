@@ -42,8 +42,8 @@ public class MainPresenter {
         followService = new FollowService();
     }
     public void updateFollows(User selectedUser) {
-        userService.updateFollowers(selectedUser, new UpdateFollowersObserver());
-        userService.updateFollowing(selectedUser, new UpdateFollowingObserver());
+        followService.updateFollowers(selectedUser, new UpdateFollowersObserver());
+        followService.updateFollowing(selectedUser, new UpdateFollowingObserver());
     }
 
     public void isFollower(User selectedUser) {
@@ -61,13 +61,7 @@ public class MainPresenter {
     public void logout() {
         userService.logout(new LogoutObserver());
     }
-    public class UpdateFollowingObserver implements UserService.UpdateFollowingObserver {
-
-        @Override
-        public void handleSuccess(User user, AuthToken authToken) {
-
-        }
-
+    public class UpdateFollowingObserver implements FollowService.UpdateFollowingObserver {
         @Override
         public void handleFailure(String message) {
 
@@ -79,18 +73,12 @@ public class MainPresenter {
         }
 
         @Override
-        public void setNumFollowing(int count) {
+        public void handleSuccess(int count) {
             String followingCount = String.valueOf(count);
             view.setFollowingCount("Following: " + followingCount);
         }
     }
-    public class UpdateFollowersObserver implements UserService.UpdateFollowersObserver {
-
-        @Override
-        public void handleSuccess(User user, AuthToken authToken) {
-            
-        }
-
+    public class UpdateFollowersObserver implements FollowService.UpdateFollowersObserver {
         @Override
         public void handleFailure(String message) {
 
@@ -102,7 +90,7 @@ public class MainPresenter {
         }
 
         @Override
-        public void setNumFollowers(int count) {
+        public void handleSuccess(int count) {
             String followerCount = String.valueOf(count);
             view.setFollowerCount("Followers: " + followerCount);
         }
