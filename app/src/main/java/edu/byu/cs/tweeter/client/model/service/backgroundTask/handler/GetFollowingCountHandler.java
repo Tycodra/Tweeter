@@ -15,4 +15,3 @@ public class GetFollowingCountHandler extends BackgroundTaskHandler<FollowServic
         observer.handleSuccess(count);
     }
 }
-

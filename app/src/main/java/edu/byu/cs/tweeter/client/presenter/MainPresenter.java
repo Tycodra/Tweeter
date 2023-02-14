@@ -103,18 +103,18 @@ public class MainPresenter {
         }
 
         @Override
-        public void displayError(String message) {
+        public void cancelPostToast() {
+            view.cancelPostToast();
+        }
+
+        @Override
+        public void handleFailure(String message) {
             view.displayMessage(message);
         }
 
         @Override
-        public void displayException(String message) {
-
-        }
-
-        @Override
-        public void cancelPostToast() {
-            view.cancelPostToast();
+        public void handleException(String message) {
+            view.displayMessage(message);
         }
     }
     public class LogoutObserver implements UserService.LogoutObserver {
@@ -179,17 +179,17 @@ public class MainPresenter {
         }
 
         @Override
-        public void displayError(String message) {
-
-        }
-
-        @Override
-        public void displayException(String message) {
-
-        }
-
-        @Override
         public void addFollows(List<User> follows, boolean hasMorePages) {
+
+        }
+
+        @Override
+        public void handleFailure(String message) {
+
+        }
+
+        @Override
+        public void handleException(String message) {
 
         }
     }

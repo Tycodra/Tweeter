@@ -72,21 +72,6 @@ public class FollowersPresenter {
     }
 
     private class GetFollowerObserver implements FollowService.FollowObserver {
-//
-//        @Override
-//        public void displayError(String message) {
-//            isLoading = false;
-//            view.setLoadingFooter(isLoading);
-//            view.displayMessage(message);
-//        }
-//
-//        @Override
-//        public void displayException(String message) {
-//            isLoading = false;
-//            view.setLoadingFooter(isLoading);
-//            view.displayMessage(message);
-//        }
-
         @Override
         public void addFollows(List<User> follows, boolean hasMorePages) {
             lastFollower = (follows.size() > 0) ? follows.get(follows.size() - 1) : null;

@@ -23,15 +23,10 @@ public class StatusService {
         void addStatuses(List<Status> statusList, boolean hasMorePages);
     }
     public interface StoryObserver extends ServiceObserver{
-//        void displayError(String message);
-//        void displayException(String message);
         void addStatuses(List<Status> statusList, boolean hasMorePages);
     }
-    public interface PostStatusObserver {
+    public interface PostStatusObserver extends ServiceObserver{
         void displaySuccess(String message);
-        void displayError(String message);
-        void displayException(String message);
-
         void cancelPostToast();
     }
     public void postStatus(Status newStatus, PostStatusObserver observer) {

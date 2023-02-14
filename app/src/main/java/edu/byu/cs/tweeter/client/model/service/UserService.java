@@ -53,7 +53,7 @@ public class UserService {
         executor.execute(logoutTask);
     }
 
-    public interface UserObserver {
+    public interface UserObserver extends ServiceObserver{
         void handleSuccess(User user, AuthToken authToken);
         void handleFailure(String message);
         void handleException(String message);

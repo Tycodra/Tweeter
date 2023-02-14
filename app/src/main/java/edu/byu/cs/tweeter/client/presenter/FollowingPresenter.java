@@ -52,12 +52,6 @@ public class FollowingPresenter {
         }
     }
 public class GetUserObserver implements UserService.GetUserObserver {
-
-//    @Override
-//    public void handleSuccess(User user, AuthToken authToken) {
-//
-//    }
-
     @Override
     public void handleFailure(String message) {
 
@@ -79,21 +73,6 @@ public class GetUserObserver implements UserService.GetUserObserver {
     }
 }
     private class GetFollowingObserver implements FollowService.FollowObserver {
-//
-//        @Override
-//        public void displayError(String message) {
-//            isLoading = false;
-//            view.setLoadingFooter(isLoading);
-//            view.displayMessage(message);
-//        }
-//
-//        @Override
-//        public void displayException(String message) {
-//            isLoading = false;
-//            view.setLoadingFooter(isLoading);
-//            view.displayMessage(message);
-//        }
-
         @Override
         public void addFollows(List<User> follows, boolean hasMorePages) {
             lastFollowee = (follows.size() > 0) ? follows.get(follows.size() - 1) : null;
