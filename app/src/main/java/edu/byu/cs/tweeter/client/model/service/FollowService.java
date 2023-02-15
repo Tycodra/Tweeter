@@ -1,6 +1,5 @@
 package edu.byu.cs.tweeter.client.model.service;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,23 +12,18 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersCountHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingCountHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollowerHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PagedTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowService {
-    public interface FollowObserver extends ServiceObserver{
-
-//        void displayError(String message);
-//
-//        void displayException(String message);
-
-        void addFollows(List<User> follows, boolean hasMorePages);
+    public interface FollowObserver extends PagedTaskObserver {
+//        void addFollows(List<User> follows, boolean hasMorePages);
     }
     public interface IsFollowerObserver extends FollowObserver{
         void setIsFollowerButton(boolean isFollower);
@@ -42,13 +36,13 @@ public class FollowService {
     }
     public void loadMoreFollowees(User user, int pageSize, User lastFollow, FollowObserver followObserver) {
         GetFollowingTask getFollowingTask = new GetFollowingTask(Cache.getInstance().getCurrUserAuthToken(),
-                user, pageSize, lastFollow, new GetFollowingHandler(followObserver));
+                user, pageSize, lastFollow, new PagedTaskHandler<User>(followObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getFollowingTask);
     }
     public void loadMoreFollowers(User user, int pageSize, User lastFollow, FollowObserver followObserver) {
         GetFollowersTask getFollowersTask = new GetFollowersTask(Cache.getInstance().getCurrUserAuthToken(),
-                user, pageSize, lastFollow, new GetFollowersHandler(followObserver));
+                user, pageSize, lastFollow, new PagedTaskHandler<User>(followObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getFollowersTask);
     }

@@ -73,14 +73,14 @@ public class GetUserObserver implements UserService.GetUserObserver {
     }
 }
     private class GetFollowingObserver implements FollowService.FollowObserver {
-        @Override
-        public void addFollows(List<User> follows, boolean hasMorePages) {
-            lastFollowee = (follows.size() > 0) ? follows.get(follows.size() - 1) : null;
-            setHasMorePages(hasMorePages);
-            isLoading = false;
-            view.setLoadingFooter(isLoading);
-            view.addMoreItems(follows);
-        }
+//        @Override
+//        public void addFollows(List<User> follows, boolean hasMorePages) {
+//            lastFollowee = (follows.size() > 0) ? follows.get(follows.size() - 1) : null;
+//            setHasMorePages(hasMorePages);
+//            isLoading = false;
+//            view.setLoadingFooter(isLoading);
+//            view.addMoreItems(follows);
+//        }
 
         @Override
         public void handleFailure(String message) {
@@ -94,6 +94,15 @@ public class GetUserObserver implements UserService.GetUserObserver {
             isLoading = false;
             view.setLoadingFooter(isLoading);
             view.displayMessage(message);
+        }
+
+        @Override
+        public void handleSuccess(List itemsList, boolean hasMorePages) {
+            lastFollowee = (itemsList.size() > 0) ? (User) itemsList.get(itemsList.size() - 1) : null;
+            setHasMorePages(hasMorePages);
+            isLoading = false;
+            view.setLoadingFooter(isLoading);
+            view.addMoreItems(itemsList);
         }
     }
 }

@@ -56,12 +56,6 @@ public class StoryPresenter {
     }
 
     public class GetUserObserver implements UserService.GetUserObserver {
-
-//        @Override
-//        public void handleSuccess(User user, AuthToken authToken) {
-//            view.displayUser(user);
-//        }
-
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
@@ -83,15 +77,7 @@ public class StoryPresenter {
 
         }
     }
-    public class GetStoryObserver implements StatusService.StoryObserver {
-        @Override
-        public void addStatuses(List<Status> statusList, boolean hasMorePages) {
-            lastStatus = (statusList.size() > 0) ? statusList.get(statusList.size() -1) : null;
-            setHasMorePages(hasMorePages);
-            isLoading = false;
-            view.setLoadingFooter(isLoading);
-            view.addMoreItems(statusList);
-        }
+    public class GetStoryObserver implements StatusService.PagedObserver {
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
@@ -99,6 +85,15 @@ public class StoryPresenter {
         @Override
         public void handleException(String message) {
             view.displayMessage(message);
+        }
+
+        @Override
+        public void handleSuccess(List itemsList, boolean hasMorePages) {
+            lastStatus = (itemsList.size() > 0) ? (Status) itemsList.get(itemsList.size() -1) : null;
+            setHasMorePages(hasMorePages);
+            isLoading = false;
+            view.setLoadingFooter(isLoading);
+            view.addMoreItems(itemsList);
         }
     }
 }

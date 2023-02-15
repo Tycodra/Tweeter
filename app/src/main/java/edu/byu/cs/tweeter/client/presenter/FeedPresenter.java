@@ -1,9 +1,12 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Bundle;
+
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -77,16 +80,7 @@ public class FeedPresenter {
 //            view.displayUser(user);
         }
     }
-    public class GetFeedObserver implements StatusService.FeedObserver {
-        @Override
-        public void addStatuses(List<Status> statusList, boolean hasMorePages) {
-            lastStatus = (statusList.size() > 0) ? statusList.get(statusList.size() -1) : null;
-            setHasMorePages(hasMorePages);
-            isLoading = false;
-            view.setLoadingFooter(isLoading);
-            view.addMoreItems(statusList);
-        }
-
+    public class GetFeedObserver implements StatusService.PagedObserver {
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
@@ -95,6 +89,14 @@ public class FeedPresenter {
         @Override
         public void handleException(String message) {
             view.displayMessage(message);
+        }
+        @Override
+        public void handleSuccess(List itemsList, boolean hasMorePages) {
+            lastStatus = (itemsList.size() > 0) ? (Status) itemsList.get(itemsList.size() -1) : null;
+            setHasMorePages(hasMorePages);
+            isLoading = false;
+            view.setLoadingFooter(isLoading);
+            view.addMoreItems(itemsList);
         }
     }
 }

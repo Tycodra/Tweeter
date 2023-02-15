@@ -178,10 +178,10 @@ public class MainPresenter {
             view.isFollower(isFollower);
         }
 
-        @Override
-        public void addFollows(List<User> follows, boolean hasMorePages) {
-
-        }
+//        @Override
+//        public void addFollows(List<User> follows, boolean hasMorePages) {
+//
+//        }
 
         @Override
         public void handleFailure(String message) {
@@ -190,6 +190,11 @@ public class MainPresenter {
 
         @Override
         public void handleException(String message) {
+
+        }
+
+        @Override
+        public void handleSuccess(List itemsList, boolean hasMorePages) {
 
         }
     }
