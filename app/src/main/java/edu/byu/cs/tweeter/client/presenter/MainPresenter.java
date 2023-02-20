@@ -5,6 +5,7 @@ import java.util.List;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.CountObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -60,7 +61,7 @@ public class MainPresenter {
     public void logout() {
         userService.logout(new LogoutObserver());
     }
-    public class UpdateFollowingObserver implements FollowService.UpdateFollowingObserver {
+    public class UpdateFollowingObserver implements CountObserver {
         @Override
         public void handleFailure(String message) {
 
@@ -77,7 +78,7 @@ public class MainPresenter {
             view.setFollowingCount("Following: " + followingCount);
         }
     }
-    public class UpdateFollowersObserver implements FollowService.UpdateFollowersObserver {
+    public class UpdateFollowersObserver implements CountObserver {
         @Override
         public void handleFailure(String message) {
 
