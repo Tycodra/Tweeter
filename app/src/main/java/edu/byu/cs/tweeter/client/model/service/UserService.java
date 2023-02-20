@@ -4,24 +4,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowersCountHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetFollowingCountHandler;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.AuthenticateUserTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LoginHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.LogoutHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.RegisterHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.AuthenticateUserObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class UserService {
@@ -32,37 +23,28 @@ public class UserService {
         executor.execute(getUserTask);
     }
 
-    public void login(String username, String password, UserObserver observer) {
-        LoginTask loginTask = new LoginTask(username, password, new LoginHandler(observer));
+    public void login(String username, String password, AuthenticateUserObserver observer) {
+        LoginTask loginTask = new LoginTask(username, password, new AuthenticateUserTaskHandler(observer));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(loginTask);
     }
 
-    public void register(String firstName, String lastName, String alias, String password, String imageToUpload, UserObserver observer) {
+    public void register(String firstName, String lastName, String alias, String password, String imageToUpload, AuthenticateUserObserver observer) {
         RegisterTask registerTask = new RegisterTask(firstName, lastName,
                                     alias, password, imageToUpload,
-                                    new RegisterHandler(observer));
+                                    new AuthenticateUserTaskHandler(observer));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(registerTask);
     }
 
-    public void logout(LogoutObserver observer) {
-        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(observer));
+    public void logout(SimpleNotificationObserver observer) {
+        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new SimpleNotificationHandler(observer));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(logoutTask);
     }
 
-    public interface UserObserver extends ServiceObserver{
-        void handleSuccess(User user, AuthToken authToken);
-        void handleFailure(String message);
-        void handleException(String message);
-    }
-
     public interface GetUserObserver extends SimpleNotificationObserver {
         void displayUser(User user);
-    }
-    public interface LogoutObserver extends UserObserver {
-        void logout();
     }
 }

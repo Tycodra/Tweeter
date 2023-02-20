@@ -6,7 +6,6 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -117,13 +116,7 @@ public class MainPresenter {
             view.displayMessage(message);
         }
     }
-    public class LogoutObserver implements UserService.LogoutObserver {
-
-        @Override
-        public void handleSuccess(User user, AuthToken authToken) {
-            
-        }
-
+    public class LogoutObserver implements SimpleNotificationObserver {
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
@@ -135,7 +128,7 @@ public class MainPresenter {
         }
 
         @Override
-        public void logout() {
+        public void handleSuccess() {
             view.logout();
         }
     }
@@ -177,11 +170,6 @@ public class MainPresenter {
         public void setIsFollowerButton(boolean isFollower) {
             view.isFollower(isFollower);
         }
-
-//        @Override
-//        public void addFollows(List<User> follows, boolean hasMorePages) {
-//
-//        }
 
         @Override
         public void handleFailure(String message) {
