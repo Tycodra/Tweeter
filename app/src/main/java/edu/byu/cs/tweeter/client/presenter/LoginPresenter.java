@@ -7,31 +7,14 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class LoginPresenter implements AuthenticateUserObserver {
     View view;
-
-    public LoginPresenter(View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void handleSuccess(User user, AuthToken authToken) {
-        view.loginSuccessful(user, authToken);
-
-    }
-
-    @Override
-    public void handleFailure(String message) {
-        view.displayInfoMessage(message);
-    }
-
-    @Override
-    public void handleException(String message) {
-        view.displayErrorMessage(message);
-    }
-
     public interface View {
         public void displayInfoMessage(String message);
         public void displayErrorMessage(String message);
         public void loginSuccessful(User user, AuthToken authToken);
+    }
+
+    public LoginPresenter(View view) {
+        this.view = view;
     }
 
     public void initiateLogin(String username, String password) {
@@ -47,6 +30,22 @@ public class LoginPresenter implements AuthenticateUserObserver {
         }
     }
 
+    @Override
+    public void handleSuccess(User user, AuthToken authToken) {
+        view.loginSuccessful(user, authToken);
+
+    }
+    @Override
+    public void handleFailure(String message) {
+        view.displayInfoMessage("Failed to login: " + message);
+    }
+
+    @Override
+    public void handleException(String message) {
+        view.displayErrorMessage("Failed to login because of exception: " + message);
+    }
+
+
     public String validateLogin(String username, String password) {
         if (username.length() > 0 && username.charAt(0) != '@') {
             return "Alias must begin with @.";
@@ -57,7 +56,6 @@ public class LoginPresenter implements AuthenticateUserObserver {
         if (password.length() == 0) {
             return "Password cannot be empty.";
         }
-
         return null;
     }
 }

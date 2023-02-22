@@ -7,6 +7,11 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter implements AuthenticateUserObserver {
     View view;
+    public interface View {
+        void displayInfoMessage(String message);
+        void displayErrorMessage(String message);
+        void registerSuccessful(User user, AuthToken authToken);
+    }
 
     public RegisterPresenter(View view) {
         this.view = view;
@@ -18,11 +23,25 @@ public class RegisterPresenter implements AuthenticateUserObserver {
         if (validationMessage == null) {
             view.displayInfoMessage("Registering ....");
             UserService service = new UserService();
-
             service.register(firstName, lastName, alias, password, imageString, this);
         } else {
             view.displayErrorMessage(validationMessage);
         }
+    }
+
+    @Override
+    public void handleSuccess(User user, AuthToken authToken) {
+        view.registerSuccessful(user, authToken);
+    }
+
+    @Override
+    public void handleFailure(String message) {
+        view.displayInfoMessage("Failed to register: " + message);
+    }
+
+    @Override
+    public void handleException(String message) {
+        view.displayErrorMessage("Failed to register because of exception: " + message);
     }
 
     public String validateRegistration(String firstName, String lastName, String alias, String password, String imageToUpload) {
@@ -48,29 +67,5 @@ public class RegisterPresenter implements AuthenticateUserObserver {
             return "Profile image must be uploaded.";
         }
         return null;
-    }
-
-    @Override
-    public void handleSuccess(User user, AuthToken authToken) {
-        view.registerSuccessful(user, authToken);
-    }
-
-    @Override
-    public void handleFailure(String message) {
-        view.displayInfoMessage(message);
-    }
-
-    @Override
-    public void handleException(String message) {
-        view.displayErrorMessage(message);
-    }
-
-    public interface View {
-
-        void displayInfoMessage(String s);
-
-        void displayErrorMessage(String validationMessage);
-
-        void registerSuccessful(User user, AuthToken authToken);
     }
 }

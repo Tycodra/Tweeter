@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -72,16 +73,7 @@ public class GetUserObserver implements UserService.GetUserObserver {
 
     }
 }
-    private class GetFollowingObserver implements FollowService.FollowObserver {
-//        @Override
-//        public void addFollows(List<User> follows, boolean hasMorePages) {
-//            lastFollowee = (follows.size() > 0) ? follows.get(follows.size() - 1) : null;
-//            setHasMorePages(hasMorePages);
-//            isLoading = false;
-//            view.setLoadingFooter(isLoading);
-//            view.addMoreItems(follows);
-//        }
-
+    private class GetFollowingObserver implements PagedTaskObserver {
         @Override
         public void handleFailure(String message) {
             isLoading = false;

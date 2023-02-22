@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -77,7 +77,7 @@ public class StoryPresenter {
 
         }
     }
-    public class GetStoryObserver implements StatusService.PagedObserver {
+    public class GetStoryObserver implements PagedTaskObserver {
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);

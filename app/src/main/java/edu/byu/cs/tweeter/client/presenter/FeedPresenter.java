@@ -80,7 +80,7 @@ public class FeedPresenter {
 //            view.displayUser(user);
         }
     }
-    public class GetFeedObserver implements StatusService.PagedObserver {
+    public class GetFeedObserver implements PagedTaskObserver {
         @Override
         public void handleFailure(String message) {
             view.displayMessage(message);
