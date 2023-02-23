@@ -5,15 +5,14 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.Authentic
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter implements AuthenticateUserObserver {
+public class RegisterPresenter extends BasePresenter implements AuthenticateUserObserver {
     View view;
-    public interface View {
-        void displayInfoMessage(String message);
-        void displayErrorMessage(String message);
+    public interface View extends BaseView {
         void registerSuccessful(User user, AuthToken authToken);
     }
 
     public RegisterPresenter(View view) {
+        super(view);
         this.view = view;
     }
 
@@ -35,13 +34,8 @@ public class RegisterPresenter implements AuthenticateUserObserver {
     }
 
     @Override
-    public void handleFailure(String message) {
-        view.displayInfoMessage("Failed to register: " + message);
-    }
-
-    @Override
-    public void handleException(String message) {
-        view.displayErrorMessage("Failed to register because of exception: " + message);
+    public String getPresenterText() {
+        return "Register";
     }
 
     public String validateRegistration(String firstName, String lastName, String alias, String password, String imageToUpload) {

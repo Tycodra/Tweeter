@@ -10,7 +10,7 @@ public class PostStatusHandler extends BackgroundTaskHandler<StatusService.PostS
     }
     @Override
     protected void handleSuccess(Bundle data, StatusService.PostStatusObserver observer) {
-        observer.cancelPostToast();
-        observer.displaySuccess("Successfully Posted!");
+//        observer.cancelPostToast();
+        observer.handleSuccess("Successfully Posted!");
     }
 }

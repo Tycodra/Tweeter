@@ -1,7 +1,5 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import java.util.List;
-
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
@@ -10,27 +8,26 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNot
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainPresenter {
-
-    public interface View {
+public class MainPresenter{
+    public interface View extends BasePresenter.BaseView {
         void isFollower(boolean isFollower);
         void displayMessage(String message);
 
         void unfollow();
 
-        void enableFollowButton(boolean enableButton);
-
         void follow();
+
+        void enableFollowButton(boolean enableButton);
 
         void logout();
 
         void cancelPostToast();
 
-        void setFollowerCount(String s);
+        void setFollowerCount(String string);
 
-        void setFollowingCount(String s);
+        void setFollowingCount(String string);
     }
-    private View view;
+    public View view;
     private UserService userService;
     private StatusService statusService;
     private FollowService followService;
@@ -42,34 +39,35 @@ public class MainPresenter {
         followService = new FollowService();
     }
     public void updateFollows(User selectedUser) {
-        followService.updateFollowers(selectedUser, new UpdateFollowersObserver());
-        followService.updateFollowing(selectedUser, new UpdateFollowingObserver());
+        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(view));
+        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(view));
     }
 
     public void isFollower(User selectedUser) {
-        followService.isFollower(selectedUser, new IsFollowerObserver());
+        followService.isFollower(selectedUser, new IsFollowerObserver(view));
     }
     public void unfollow(User selectedUser) {
-        followService.unfollow(selectedUser, new UnfollowObserver());
+        followService.unfollow(selectedUser, new UnfollowObserver(view));
     }
     public void follow(User selectedUser) {
-        followService.follow(selectedUser, new FollowObserver());
+        followService.follow(selectedUser, new FollowObserver(view));
     }
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostStatusObserver());
+        statusService.postStatus(newStatus, new PostStatusObserver(view));
     }
     public void logout() {
-        userService.logout(new LogoutObserver());
+        userService.logout(new LogoutObserver(view));
     }
-    public class UpdateFollowingObserver implements CountObserver {
-        @Override
-        public void handleFailure(String message) {
-
+    public class UpdateFollowingObserver extends BasePresenter implements CountObserver {
+        MainPresenter.View view;
+        public UpdateFollowingObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
         }
 
         @Override
-        public void handleException(String message) {
-
+        public String getPresenterText() {
+            return "get Following";
         }
 
         @Override
@@ -78,15 +76,16 @@ public class MainPresenter {
             view.setFollowingCount("Following: " + followingCount);
         }
     }
-    public class UpdateFollowersObserver implements CountObserver {
-        @Override
-        public void handleFailure(String message) {
-
+    public class UpdateFollowersObserver extends BasePresenter implements CountObserver {
+        MainPresenter.View view;
+        public UpdateFollowersObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
         }
 
         @Override
-        public void handleException(String message) {
-
+        public String getPresenterText() {
+            return "get Followers";
         }
 
         @Override
@@ -95,37 +94,32 @@ public class MainPresenter {
             view.setFollowerCount("Followers: " + followerCount);
         }
     }
-    public class PostStatusObserver implements StatusService.PostStatusObserver {
-
-        @Override
-        public void displaySuccess(String message) {
-            view.displayMessage(message);
+    public class PostStatusObserver extends BasePresenter implements StatusService.PostStatusObserver {
+        MainPresenter.View view;
+        public PostStatusObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
         }
-
         @Override
-        public void cancelPostToast() {
+        public void handleSuccess(String message) {
             view.cancelPostToast();
-        }
-
-        @Override
-        public void handleFailure(String message) {
             view.displayMessage(message);
         }
-
         @Override
-        public void handleException(String message) {
-            view.displayMessage(message);
+        public String getPresenterText() {
+            return "Post Status";
         }
     }
-    public class LogoutObserver implements SimpleNotificationObserver {
-        @Override
-        public void handleFailure(String message) {
-            view.displayMessage(message);
+    public class LogoutObserver extends BasePresenter implements SimpleNotificationObserver {
+        MainPresenter.View view;
+        public LogoutObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
         }
 
         @Override
-        public void handleException(String message) {
-            view.displayMessage(message);
+        public String getPresenterText() {
+            return "Logout";
         }
 
         @Override
@@ -133,22 +127,29 @@ public class MainPresenter {
             view.logout();
         }
     }
-    public class UnfollowObserver implements SimpleNotificationObserver {
+    public class UnfollowObserver extends BasePresenter implements SimpleNotificationObserver {
+        MainPresenter.View view;
+        public UnfollowObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
+        }
+
         @Override
         public void handleSuccess() {
             view.unfollow();
             view.enableFollowButton(true);
         }
         @Override
-        public void handleFailure(String message) {
-            view.displayMessage(message);
-        }
-        @Override
-        public void handleException(String message) {
-            view.displayMessage(message);
+        public String getPresenterText() {
+            return "Failed to Unfollow";
         }
     }
-    public class FollowObserver implements SimpleNotificationObserver {
+    public class FollowObserver extends BasePresenter implements SimpleNotificationObserver {
+        MainPresenter.View view;
+        public FollowObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
+        }
 
         @Override
         public void handleSuccess() {
@@ -157,34 +158,25 @@ public class MainPresenter {
         }
 
         @Override
-        public void handleFailure(String message) {
-            view.displayMessage(message);
-        }
-
-        @Override
-        public void handleException(String message) {
-            view.displayMessage(message);
+        public String getPresenterText() {
+            return "Follow";
         }
     }
-    public class IsFollowerObserver implements FollowService.IsFollowerObserver {
+    public class IsFollowerObserver extends BasePresenter implements FollowService.IsFollowerObserver {
+        MainPresenter.View view;
+        public IsFollowerObserver(MainPresenter.View view) {
+            super(view);
+            this.view = view;
+        }
+
         @Override
         public void setIsFollowerButton(boolean isFollower) {
             view.isFollower(isFollower);
         }
 
         @Override
-        public void handleFailure(String message) {
-
-        }
-
-        @Override
-        public void handleException(String message) {
-
-        }
-
-        @Override
-        public void handleSuccess(List itemsList, boolean hasMorePages) {
-
+        public String getPresenterText() {
+            return "IsFollower";
         }
     }
 }

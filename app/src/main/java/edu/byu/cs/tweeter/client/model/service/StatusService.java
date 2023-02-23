@@ -14,8 +14,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService extends BackgroundTaskUtils {
     public interface PostStatusObserver extends ServiceObserver{
-        void displaySuccess(String message);
-        void cancelPostToast();
+        void handleSuccess(String message);
     }
     public void postStatus(Status newStatus, PostStatusObserver observer) {
         PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
