@@ -6,31 +6,31 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class RegisterPresenter extends BasePresenter implements AuthenticateUserObserver {
-    View view;
     public interface View extends BaseView {
         void registerSuccessful(User user, AuthToken authToken);
     }
-
     public RegisterPresenter(View view) {
         super(view);
-        this.view = view;
+    }
+    public View getRegisterView() {
+        return (View)baseView;
     }
 
     public void initiateRegister(String firstName, String lastName, String alias, String password, String imageString) {
         String validationMessage = validateRegistration(firstName, lastName, alias, password, imageString);
 
         if (validationMessage == null) {
-            view.displayInfoMessage("Registering ....");
+            baseView.displayInfoMessage("Registering ....");
             UserService service = new UserService();
             service.register(firstName, lastName, alias, password, imageString, this);
         } else {
-            view.displayErrorMessage(validationMessage);
+            baseView.displayErrorMessage(validationMessage);
         }
     }
 
     @Override
     public void handleSuccess(User user, AuthToken authToken) {
-        view.registerSuccessful(user, authToken);
+        getRegisterView().registerSuccessful(user, authToken);
     }
 
     @Override

@@ -8,175 +8,157 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNot
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainPresenter{
+public class MainPresenter extends BasePresenter{
     public interface View extends BasePresenter.BaseView {
         void isFollower(boolean isFollower);
         void displayMessage(String message);
-
         void unfollow();
-
         void follow();
-
         void enableFollowButton(boolean enableButton);
-
         void logout();
-
         void cancelPostToast();
-
         void setFollowerCount(String string);
-
         void setFollowingCount(String string);
     }
-    public View view;
     private UserService userService;
     private StatusService statusService;
     private FollowService followService;
 
     public MainPresenter(View view) {
-        this.view = view;
+        super(view);
         userService = new UserService();
         statusService = new StatusService();
         followService = new FollowService();
     }
+    public View getMainPresenter() {
+        return (View)baseView;
+    }
     public void updateFollows(User selectedUser) {
-        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(view));
-        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(view));
+        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(getMainPresenter()));
+        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(getMainPresenter()));
     }
 
     public void isFollower(User selectedUser) {
-        followService.isFollower(selectedUser, new IsFollowerObserver(view));
+        followService.isFollower(selectedUser, new IsFollowerObserver(getMainPresenter()));
     }
     public void unfollow(User selectedUser) {
-        followService.unfollow(selectedUser, new UnfollowObserver(view));
+        followService.unfollow(selectedUser, new UnfollowObserver(getMainPresenter()));
     }
     public void follow(User selectedUser) {
-        followService.follow(selectedUser, new FollowObserver(view));
+        followService.follow(selectedUser, new FollowObserver(getMainPresenter()));
     }
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostStatusObserver(view));
+        statusService.postStatus(newStatus, new PostStatusObserver(getMainPresenter()));
     }
     public void logout() {
-        userService.logout(new LogoutObserver(view));
+        userService.logout(new LogoutObserver(getMainPresenter()));
     }
+
     public class UpdateFollowingObserver extends BasePresenter implements CountObserver {
-        MainPresenter.View view;
         public UpdateFollowingObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public String getPresenterText() {
             return "get Following";
         }
-
         @Override
         public void handleSuccess(int count) {
             String followingCount = String.valueOf(count);
-            view.setFollowingCount("Following: " + followingCount);
+            getMainPresenter().setFollowingCount("Following: " + followingCount);
         }
     }
+
     public class UpdateFollowersObserver extends BasePresenter implements CountObserver {
-        MainPresenter.View view;
         public UpdateFollowersObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public String getPresenterText() {
             return "get Followers";
         }
-
         @Override
         public void handleSuccess(int count) {
             String followerCount = String.valueOf(count);
-            view.setFollowerCount("Followers: " + followerCount);
+            getMainPresenter().setFollowerCount("Followers: " + followerCount);
         }
     }
+
     public class PostStatusObserver extends BasePresenter implements StatusService.PostStatusObserver {
-        MainPresenter.View view;
         public PostStatusObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
         @Override
         public void handleSuccess(String message) {
-            view.cancelPostToast();
-            view.displayMessage(message);
+            getMainPresenter().cancelPostToast();
+            getMainPresenter().displayMessage(message);
         }
         @Override
         public String getPresenterText() {
             return "Post Status";
         }
     }
+
     public class LogoutObserver extends BasePresenter implements SimpleNotificationObserver {
-        MainPresenter.View view;
         public LogoutObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public String getPresenterText() {
             return "Logout";
         }
-
         @Override
         public void handleSuccess() {
-            view.logout();
+            getMainPresenter().logout();
         }
     }
+
     public class UnfollowObserver extends BasePresenter implements SimpleNotificationObserver {
-        MainPresenter.View view;
         public UnfollowObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public void handleSuccess() {
-            view.unfollow();
-            view.enableFollowButton(true);
+            getMainPresenter().unfollow();
+            getMainPresenter().enableFollowButton(true);
         }
         @Override
         public String getPresenterText() {
             return "Failed to Unfollow";
         }
     }
+
     public class FollowObserver extends BasePresenter implements SimpleNotificationObserver {
-        MainPresenter.View view;
         public FollowObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public void handleSuccess() {
-            view.follow();
-            view.enableFollowButton(true);
+            getMainPresenter().follow();
+            getMainPresenter().enableFollowButton(true);
         }
-
         @Override
         public String getPresenterText() {
             return "Follow";
         }
     }
+
     public class IsFollowerObserver extends BasePresenter implements FollowService.IsFollowerObserver {
-        MainPresenter.View view;
         public IsFollowerObserver(MainPresenter.View view) {
             super(view);
-            this.view = view;
         }
-
         @Override
         public void setIsFollowerButton(boolean isFollower) {
-            view.isFollower(isFollower);
+            getMainPresenter().isFollower(isFollower);
         }
-
         @Override
         public String getPresenterText() {
             return "IsFollower";
         }
+    }
+
+    @Override
+    public String getPresenterText() {
+        return null;
     }
 }

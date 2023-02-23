@@ -12,9 +12,7 @@ public class StoryPresenter {
     public interface View {
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
-
         void displayMessage(String message);
-
         void addMoreItems(List<Status> statusList);
     }
 
@@ -25,7 +23,6 @@ public class StoryPresenter {
     private static final int PAGE_SIZE = 10;
     private boolean isLoading = false;
     private boolean hasMorePages;
-
     private Status lastStatus;
 
     public StoryPresenter(View view) {

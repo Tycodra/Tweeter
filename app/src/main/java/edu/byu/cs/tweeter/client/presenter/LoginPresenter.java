@@ -5,46 +5,37 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.Authentic
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter implements AuthenticateUserObserver {
-    View view;
-    public interface View {
-        public void displayInfoMessage(String message);
-        public void displayErrorMessage(String message);
+public class LoginPresenter extends BasePresenter implements AuthenticateUserObserver {
+    public interface View extends BasePresenter.BaseView{
         public void loginSuccessful(User user, AuthToken authToken);
     }
-
     public LoginPresenter(View view) {
-        this.view = view;
+        super(view);
     }
-
+    public View getLoginView() {
+        return (View)baseView;
+    }
     public void initiateLogin(String username, String password) {
         String validationMessage = validateLogin(username, password);
 
         if (validationMessage == null) {
-            view.displayInfoMessage("Logging in ....");
+            getLoginView().displayInfoMessage("Logging in ....");
             UserService service = new UserService();
             service.login(username, password, this);
         }
         else {
-            view.displayErrorMessage(validationMessage);
+            getLoginView().displayErrorMessage(validationMessage);
         }
     }
-
     @Override
     public void handleSuccess(User user, AuthToken authToken) {
-        view.loginSuccessful(user, authToken);
+        getLoginView().loginSuccessful(user, authToken);
 
     }
     @Override
-    public void handleFailure(String message) {
-        view.displayInfoMessage("Failed to login: " + message);
+    public String getPresenterText() {
+        return "Login";
     }
-
-    @Override
-    public void handleException(String message) {
-        view.displayErrorMessage("Failed to login because of exception: " + message);
-    }
-
 
     public String validateLogin(String username, String password) {
         if (username.length() > 0 && username.charAt(0) != '@') {

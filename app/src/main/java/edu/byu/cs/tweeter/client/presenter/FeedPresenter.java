@@ -1,24 +1,18 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import android.os.Bundle;
-
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FeedPresenter {
-
     public interface View {
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
-
         void displayMessage(String message);
-
         void addMoreItems(List<Status> statusList);
     }
     private View view;
@@ -28,7 +22,6 @@ public class FeedPresenter {
     private static final int PAGE_SIZE = 10;
     private boolean isLoading = false;
     private boolean hasMorePages;
-
     private Status lastStatus;
 
     public FeedPresenter(View view) {
