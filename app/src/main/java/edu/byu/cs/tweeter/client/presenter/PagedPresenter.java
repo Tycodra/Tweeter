@@ -8,6 +8,14 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTask
 import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class PagedPresenter<T> extends BasePresenter implements GetUserObserver, PagedTaskObserver<T> {
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public boolean hasMorePages() {
+        return hasMorePages;
+    }
+
     public interface View<T> extends BaseView {
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
@@ -31,8 +39,8 @@ public abstract class PagedPresenter<T> extends BasePresenter implements GetUser
         }
     }
 
-    public View getPagedView() {
-        return (View)baseView;
+    public View<T> getPagedView() {
+        return (View<T>)baseView;
     }
 
     @Override

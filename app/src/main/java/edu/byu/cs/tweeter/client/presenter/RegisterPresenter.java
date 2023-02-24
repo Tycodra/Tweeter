@@ -1,14 +1,10 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.AuthenticateUserObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter extends BasePresenter implements AuthenticateUserObserver {
-    public interface View extends BaseView {
-        void registerSuccessful(User user, AuthToken authToken);
-    }
+public class RegisterPresenter extends AuthenticatePresenter implements AuthenticateUserObserver {
     public RegisterPresenter(View view) {
         super(view);
     }
@@ -21,8 +17,7 @@ public class RegisterPresenter extends BasePresenter implements AuthenticateUser
 
         if (validationMessage == null) {
             getRegisterView().displayInfoMessage("Registering ....");
-            UserService service = new UserService();
-            service.register(firstName, lastName, alias, password, imageString, this);
+            getUserService().register(firstName, lastName, alias, password, imageString, this);
         } else {
             getRegisterView().displayErrorMessage(validationMessage);
         }
@@ -30,7 +25,7 @@ public class RegisterPresenter extends BasePresenter implements AuthenticateUser
 
     @Override
     public void handleSuccess(User user, AuthToken authToken) {
-        getRegisterView().registerSuccessful(user, authToken);
+        getRegisterView().authenticationSuccessful(user, authToken);
     }
 
     @Override

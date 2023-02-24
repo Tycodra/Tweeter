@@ -1,14 +1,10 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.AuthenticateUserObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter extends BasePresenter implements AuthenticateUserObserver {
-    public interface View extends BaseView{
-        void loginSuccessful(User user, AuthToken authToken);
-    }
+public class LoginPresenter extends AuthenticatePresenter implements AuthenticateUserObserver {
     public LoginPresenter(View view) {
         super(view);
     }
@@ -21,8 +17,7 @@ public class LoginPresenter extends BasePresenter implements AuthenticateUserObs
 
         if (validationMessage == null) {
             getLoginView().displayInfoMessage("Logging in ....");
-            UserService service = new UserService();
-            service.login(username, password, this);
+            getUserService().login(username, password, this);
         }
         else {
             getLoginView().displayErrorMessage(validationMessage);
@@ -30,7 +25,7 @@ public class LoginPresenter extends BasePresenter implements AuthenticateUserObs
     }
     @Override
     public void handleSuccess(User user, AuthToken authToken) {
-        getLoginView().loginSuccessful(user, authToken);
+        getLoginView().authenticationSuccessful(user, authToken);
     }
     @Override
     public String getPresenterText() {
