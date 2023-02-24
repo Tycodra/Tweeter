@@ -6,8 +6,8 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class LoginPresenter extends BasePresenter implements AuthenticateUserObserver {
-    public interface View extends BasePresenter.BaseView{
-        public void loginSuccessful(User user, AuthToken authToken);
+    public interface View extends BaseView{
+        void loginSuccessful(User user, AuthToken authToken);
     }
     public LoginPresenter(View view) {
         super(view);
@@ -15,6 +15,7 @@ public class LoginPresenter extends BasePresenter implements AuthenticateUserObs
     public View getLoginView() {
         return (View)baseView;
     }
+
     public void initiateLogin(String username, String password) {
         String validationMessage = validateLogin(username, password);
 
@@ -30,7 +31,6 @@ public class LoginPresenter extends BasePresenter implements AuthenticateUserObs
     @Override
     public void handleSuccess(User user, AuthToken authToken) {
         getLoginView().loginSuccessful(user, authToken);
-
     }
     @Override
     public String getPresenterText() {

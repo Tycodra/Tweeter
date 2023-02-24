@@ -20,11 +20,11 @@ public class RegisterPresenter extends BasePresenter implements AuthenticateUser
         String validationMessage = validateRegistration(firstName, lastName, alias, password, imageString);
 
         if (validationMessage == null) {
-            baseView.displayInfoMessage("Registering ....");
+            getRegisterView().displayInfoMessage("Registering ....");
             UserService service = new UserService();
             service.register(firstName, lastName, alias, password, imageString, this);
         } else {
-            baseView.displayErrorMessage(validationMessage);
+            getRegisterView().displayErrorMessage(validationMessage);
         }
     }
 

@@ -10,6 +10,8 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.Authentica
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.AuthenticateUserObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.GetUserObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -32,7 +34,6 @@ public class UserService extends BackgroundTaskUtils {
         LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new SimpleNotificationHandler(observer));
         runTask(logoutTask);
     }
-    public interface GetUserObserver extends SimpleNotificationObserver {
-        void displayUser(User user);
-    }
+//    public interface GetUserObserver extends edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.GetUserObserver {
+//    }
 }
