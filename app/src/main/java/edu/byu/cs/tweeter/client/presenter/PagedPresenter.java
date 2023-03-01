@@ -20,7 +20,7 @@ public abstract class PagedPresenter<T> extends BasePresenter implements GetUser
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
         void displayMessage(String message);
-        void addMoreItems(List<T> statusList);
+        void addMoreItems(List<T> itemsList);
     }
     protected static final int PAGE_SIZE = 10;
     protected boolean isLoading = false;

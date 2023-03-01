@@ -16,7 +16,7 @@ public class LoginPresenter extends AuthenticatePresenter implements Authenticat
         String validationMessage = validateLogin(username, password);
 
         if (validationMessage == null) {
-            getLoginView().displayInfoMessage("Logging in ....");
+            getLoginView().displayMessage("Logging in ....");
             getUserService().login(username, password, this);
         }
         else {

@@ -22,6 +22,3 @@ public class FollowersPresenter extends PagedPresenter<User> {
         getFollowService().loadMoreFollowers(user, PAGE_SIZE, lastItem, this);
     }
 }
-
-
-

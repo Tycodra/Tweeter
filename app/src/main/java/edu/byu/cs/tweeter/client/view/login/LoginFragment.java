@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View{
     }
 
     @Override
-    public void displayInfoMessage(String message) {
+    public void displayMessage(String message) {
         loginToast = Toast.makeText(getContext(), "Logging In...", Toast.LENGTH_LONG);
         loginToast.show();
     }
@@ -74,8 +74,9 @@ public class LoginFragment extends Fragment implements LoginPresenter.View{
         errorView.setText(message);
     }
 
+
     @Override
-    public void loginSuccessful(User user, AuthToken authToken) {
+    public void authenticationSuccessful(User user, AuthToken authToken) {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
 

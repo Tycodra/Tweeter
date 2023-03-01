@@ -16,7 +16,7 @@ public class RegisterPresenter extends AuthenticatePresenter implements Authenti
         String validationMessage = validateRegistration(firstName, lastName, alias, password, imageString);
 
         if (validationMessage == null) {
-            getRegisterView().displayInfoMessage("Registering ....");
+            getRegisterView().displayMessage("Registering ....");
             getUserService().register(firstName, lastName, alias, password, imageString, this);
         } else {
             getRegisterView().displayErrorMessage(validationMessage);

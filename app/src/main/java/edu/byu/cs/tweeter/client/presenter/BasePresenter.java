@@ -4,7 +4,6 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class BasePresenter implements ServiceObserver {
     BaseView baseView;
@@ -26,8 +25,7 @@ public abstract class BasePresenter implements ServiceObserver {
     }
 
     public interface BaseView {
-        void displayInfoMessage(String message);
-        void displayErrorMessage(String message);
+        void displayMessage(String message);
     }
 
     public BasePresenter(BaseView view) {
@@ -36,12 +34,12 @@ public abstract class BasePresenter implements ServiceObserver {
 
     @Override
     public void handleFailure(String message) {
-        baseView.displayInfoMessage("Failed to " + getPresenterText() +": " + message);
+        baseView.displayMessage("Failed to " + getPresenterText() +": " + message);
     }
 
     @Override
     public void handleException(String message) {
-        baseView.displayErrorMessage("Failed to " + getPresenterText() +" because of exception: " + message);
+        baseView.displayMessage("Failed to " + getPresenterText() +" because of exception: " + message);
     }
 
     public abstract String getPresenterText();

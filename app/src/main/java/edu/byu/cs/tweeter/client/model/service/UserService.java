@@ -34,6 +34,4 @@ public class UserService extends BackgroundTaskUtils {
         LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new SimpleNotificationHandler(observer));
         runTask(logoutTask);
     }
-//    public interface GetUserObserver extends edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.GetUserObserver {
-//    }
 }
