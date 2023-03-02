@@ -4,6 +4,8 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.CountObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.IsFollowerObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PostStatusObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -39,7 +41,7 @@ public class MainPresenter extends BasePresenter{
     }
 
     public void isFollower(User selectedUser) {
-        followService.isFollower(selectedUser, new IsFollowerObserver(getMainView()));
+        followService.isFollower(selectedUser, new IsFollower(getMainView()));
     }
     public void unfollow(User selectedUser) {
         followService.unfollow(selectedUser, new UnfollowObserver(getMainView()));
@@ -48,7 +50,7 @@ public class MainPresenter extends BasePresenter{
         followService.follow(selectedUser, new FollowObserver(getMainView()));
     }
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostStatusObserver(getMainView()));
+        statusService.postStatus(newStatus, new PostingStatusObserver(getMainView()));
     }
     public void logout() {
         userService.logout(new LogoutObserver(getMainView()));
@@ -84,8 +86,8 @@ public class MainPresenter extends BasePresenter{
         }
     }
 
-    public class PostStatusObserver extends BasePresenter implements StatusService.PostStatusObserver {
-        public PostStatusObserver(MainPresenter.View view) {
+    public class PostingStatusObserver extends BasePresenter implements PostStatusObserver {
+        public PostingStatusObserver(MainPresenter.View view) {
             super(view);
         }
         @Override
@@ -143,8 +145,8 @@ public class MainPresenter extends BasePresenter{
         }
     }
 
-    public class IsFollowerObserver extends BasePresenter implements FollowService.IsFollowerObserver {
-        public IsFollowerObserver(MainPresenter.View view) {
+    public class IsFollower extends BasePresenter implements IsFollowerObserver {
+        public IsFollower(MainPresenter.View view) {
             super(view);
         }
         @Override

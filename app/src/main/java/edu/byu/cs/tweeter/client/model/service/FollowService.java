@@ -14,16 +14,13 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.IsFollower
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PagedTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.CountObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.IsFollowerObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowService extends BackgroundTaskUtils {
-
-    public interface IsFollowerObserver extends ServiceObserver{
-        void setIsFollowerButton(boolean isFollower);
-    }
     public void loadMoreFollowees(User user, int pageSize, User lastFollow, PagedTaskObserver followObserver) {
         GetFollowingTask getFollowingTask = new GetFollowingTask(Cache.getInstance().getCurrUserAuthToken(),
                 user, pageSize, lastFollow, new PagedTaskHandler<User>(followObserver));
@@ -34,7 +31,7 @@ public class FollowService extends BackgroundTaskUtils {
                 user, pageSize, lastFollow, new PagedTaskHandler<User>(followObserver));
         runTask(getFollowersTask);
     }
-    public void isFollower(User selectedUser, FollowService.IsFollowerObserver observer) {
+    public void isFollower(User selectedUser, IsFollowerObserver observer) {
         IsFollowerTask isFollowerTask = new IsFollowerTask(Cache.getInstance().getCurrUserAuthToken(),
                 Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler(observer));
         runTask(isFollowerTask);

@@ -11,7 +11,7 @@ public class FollowersPresenter extends PagedPresenter<User> {
         return null;
     }
 
-    public FollowersPresenter(View view) {
+    public FollowersPresenter(PagedView view) {
         super(view);
         followService = new FollowService();
         userService = new UserService();

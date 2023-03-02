@@ -3,7 +3,7 @@ package edu.byu.cs.tweeter.client.presenter;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FollowingPresenter extends PagedPresenter<User>{
-    public FollowingPresenter(View view) {
+    public FollowingPresenter(PagedView view) {
         super(view);
     }
 

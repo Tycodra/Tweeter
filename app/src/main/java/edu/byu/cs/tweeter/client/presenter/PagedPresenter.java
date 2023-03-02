@@ -16,7 +16,7 @@ public abstract class PagedPresenter<T> extends BasePresenter implements GetUser
         return hasMorePages;
     }
 
-    public interface View<T> extends BaseView {
+    public interface PagedView<T> extends BaseView {
         void setLoadingFooter(boolean loadingFooterStatus);
         void displayUser(User user);
         void displayMessage(String message);
@@ -39,8 +39,8 @@ public abstract class PagedPresenter<T> extends BasePresenter implements GetUser
         }
     }
 
-    public View<T> getPagedView() {
-        return (View<T>)baseView;
+    public PagedView<T> getPagedView() {
+        return (PagedView<T>)baseView;
     }
 
     @Override

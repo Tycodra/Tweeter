@@ -8,7 +8,7 @@ public class FeedPresenter extends PagedPresenter<Status>{
     public String getPresenterText() {
         return null;
     }
-    public FeedPresenter(View view) {
+    public FeedPresenter(PagedView view) {
         super(view);
     }
     @Override

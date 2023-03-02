@@ -11,9 +11,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.GetUserHan
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.SimpleNotificationHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.AuthenticateUserObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.GetUserObserver;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.ServiceObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public class UserService extends BackgroundTaskUtils {
     public void getUser(String userAlias, GetUserObserver getUserObserver) {
