@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
                 containedUrls.add(word);
             }
         }
-
         return containedUrls;
     }
 

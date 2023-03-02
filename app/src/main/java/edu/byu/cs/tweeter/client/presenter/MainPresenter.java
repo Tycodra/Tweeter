@@ -30,28 +30,28 @@ public class MainPresenter extends BasePresenter{
         statusService = new StatusService();
         followService = new FollowService();
     }
-    public View getMainPresenter() {
+    public View getMainView() {
         return (View)baseView;
     }
     public void updateFollows(User selectedUser) {
-        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(getMainPresenter()));
-        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(getMainPresenter()));
+        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(getMainView()));
+        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(getMainView()));
     }
 
     public void isFollower(User selectedUser) {
-        followService.isFollower(selectedUser, new IsFollowerObserver(getMainPresenter()));
+        followService.isFollower(selectedUser, new IsFollowerObserver(getMainView()));
     }
     public void unfollow(User selectedUser) {
-        followService.unfollow(selectedUser, new UnfollowObserver(getMainPresenter()));
+        followService.unfollow(selectedUser, new UnfollowObserver(getMainView()));
     }
     public void follow(User selectedUser) {
-        followService.follow(selectedUser, new FollowObserver(getMainPresenter()));
+        followService.follow(selectedUser, new FollowObserver(getMainView()));
     }
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostStatusObserver(getMainPresenter()));
+        statusService.postStatus(newStatus, new PostStatusObserver(getMainView()));
     }
     public void logout() {
-        userService.logout(new LogoutObserver(getMainPresenter()));
+        userService.logout(new LogoutObserver(getMainView()));
     }
 
     public class UpdateFollowingObserver extends BasePresenter implements CountObserver {
@@ -65,7 +65,7 @@ public class MainPresenter extends BasePresenter{
         @Override
         public void handleSuccess(int count) {
             String followingCount = String.valueOf(count);
-            getMainPresenter().setFollowingCount("Following: " + followingCount);
+            getMainView().setFollowingCount("Following: " + followingCount);
         }
     }
 
@@ -80,7 +80,7 @@ public class MainPresenter extends BasePresenter{
         @Override
         public void handleSuccess(int count) {
             String followerCount = String.valueOf(count);
-            getMainPresenter().setFollowerCount("Followers: " + followerCount);
+            getMainView().setFollowerCount("Followers: " + followerCount);
         }
     }
 
@@ -90,8 +90,8 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public void handleSuccess(String message) {
-            getMainPresenter().cancelPostToast();
-            getMainPresenter().displayMessage(message);
+            getMainView().cancelPostToast();
+            getMainView().displayMessage(message);
         }
         @Override
         public String getPresenterText() {
@@ -109,7 +109,7 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public void handleSuccess() {
-            getMainPresenter().logout();
+            getMainView().logout();
         }
     }
 
@@ -119,8 +119,8 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public void handleSuccess() {
-            getMainPresenter().unfollow();
-            getMainPresenter().enableFollowButton(true);
+            getMainView().unfollow();
+            getMainView().enableFollowButton(true);
         }
         @Override
         public String getPresenterText() {
@@ -134,8 +134,8 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public void handleSuccess() {
-            getMainPresenter().follow();
-            getMainPresenter().enableFollowButton(true);
+            getMainView().follow();
+            getMainView().enableFollowButton(true);
         }
         @Override
         public String getPresenterText() {
@@ -149,7 +149,7 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public void setIsFollowerButton(boolean isFollower) {
-            getMainPresenter().isFollower(isFollower);
+            getMainView().isFollower(isFollower);
         }
         @Override
         public String getPresenterText() {

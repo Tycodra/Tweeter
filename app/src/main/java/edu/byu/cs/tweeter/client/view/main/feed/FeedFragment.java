@@ -46,7 +46,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the "Feed" tab.
  */
-public class FeedFragment extends Fragment implements FeedPresenter.View {
+public class FeedFragment extends Fragment implements FeedPresenter.View<Status> {
     private static final String LOG_TAG = "FeedFragment";
     private static final String USER_KEY = "UserKey";
 
@@ -120,6 +120,11 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     public void displayMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
+
+//    @Override
+//    public void addMoreItems(List itemsList) {
+//        feedRecyclerViewAdapter.addItems(itemsList);
+//    }
 
     @Override
     public void addMoreItems(List<Status> statusList) {
