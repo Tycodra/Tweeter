@@ -8,13 +8,11 @@ public class FollowersPresenter extends PagedPresenter<User> {
 
     @Override
     public String getPresenterText() {
-        return null;
+        return "Get Followers";
     }
 
     public FollowersPresenter(PagedView view) {
         super(view);
-        followService = new FollowService();
-        userService = new UserService();
     }
 
     @Override

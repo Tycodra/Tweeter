@@ -29,7 +29,6 @@ public abstract class PagedPresenter<T> extends BasePresenter implements GetUser
 
     public PagedPresenter(BaseView view) {
         super(view);
-        userService = new UserService();
     }
     public void loadMoreItems(User user) {
         if (!isLoading) {

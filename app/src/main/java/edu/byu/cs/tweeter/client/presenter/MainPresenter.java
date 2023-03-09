@@ -1,17 +1,14 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.FollowService;
-import edu.byu.cs.tweeter.client.model.service.StatusService;
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.CountObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.IsFollowerObserver;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PostStatusObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.StringNotificationObserver;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class MainPresenter extends BasePresenter{
-    public interface View extends BasePresenter.BaseView {
+    public interface MainView extends BasePresenter.BaseView {
         void isFollower(boolean isFollower);
         void displayMessage(String message);
         void unfollow();
@@ -22,42 +19,37 @@ public class MainPresenter extends BasePresenter{
         void setFollowerCount(String string);
         void setFollowingCount(String string);
     }
-    private UserService userService;
-    private StatusService statusService;
-    private FollowService followService;
 
-    public MainPresenter(View view) {
+    public MainPresenter(MainView view) {
         super(view);
-        userService = new UserService();
-        statusService = new StatusService();
-        followService = new FollowService();
     }
-    public View getMainView() {
-        return (View)baseView;
+    public MainView getMainView() {
+        return (MainView)baseView;
     }
     public void updateFollows(User selectedUser) {
-        followService.updateFollowers(selectedUser, new UpdateFollowersObserver(getMainView()));
-        followService.updateFollowing(selectedUser, new UpdateFollowingObserver(getMainView()));
+        getFollowService().updateFollowers(selectedUser, new UpdateFollowersObserver(getMainView()));
+        getFollowService().updateFollowing(selectedUser, new UpdateFollowingObserver(getMainView()));
     }
 
     public void isFollower(User selectedUser) {
-        followService.isFollower(selectedUser, new IsFollower(getMainView()));
+        getFollowService().isFollower(selectedUser, new IsFollower(getMainView()));
     }
     public void unfollow(User selectedUser) {
-        followService.unfollow(selectedUser, new UnfollowObserver(getMainView()));
+        getFollowService().unfollow(selectedUser, new UnfollowObserver(getMainView()));
     }
     public void follow(User selectedUser) {
-        followService.follow(selectedUser, new FollowObserver(getMainView()));
+        getFollowService().follow(selectedUser, new FollowObserver(getMainView()));
     }
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostingStatusObserver(getMainView()));
+        getMainView().displayMessage("Posting Status...");
+        getStatusService().postStatus(newStatus, new PostStatusObserver(getMainView()));
     }
     public void logout() {
-        userService.logout(new LogoutObserver(getMainView()));
+        getUserService().logout(new LogoutObserver(getMainView()));
     }
 
     public class UpdateFollowingObserver extends BasePresenter implements CountObserver {
-        public UpdateFollowingObserver(MainPresenter.View view) {
+        public UpdateFollowingObserver(MainView view) {
             super(view);
         }
         @Override
@@ -72,7 +64,7 @@ public class MainPresenter extends BasePresenter{
     }
 
     public class UpdateFollowersObserver extends BasePresenter implements CountObserver {
-        public UpdateFollowersObserver(MainPresenter.View view) {
+        public UpdateFollowersObserver(MainView view) {
             super(view);
         }
         @Override
@@ -86,23 +78,23 @@ public class MainPresenter extends BasePresenter{
         }
     }
 
-    public class PostingStatusObserver extends BasePresenter implements PostStatusObserver {
-        public PostingStatusObserver(MainPresenter.View view) {
+    public class PostStatusObserver extends BasePresenter implements StringNotificationObserver {
+        public PostStatusObserver(MainView view) {
             super(view);
         }
         @Override
         public void handleSuccess(String message) {
-            getMainView().cancelPostToast();
             getMainView().displayMessage(message);
         }
         @Override
         public String getPresenterText() {
             return "Post Status";
         }
+
     }
 
     public class LogoutObserver extends BasePresenter implements SimpleNotificationObserver {
-        public LogoutObserver(MainPresenter.View view) {
+        public LogoutObserver(MainView view) {
             super(view);
         }
         @Override
@@ -116,7 +108,7 @@ public class MainPresenter extends BasePresenter{
     }
 
     public class UnfollowObserver extends BasePresenter implements SimpleNotificationObserver {
-        public UnfollowObserver(MainPresenter.View view) {
+        public UnfollowObserver(MainView view) {
             super(view);
         }
         @Override
@@ -126,12 +118,12 @@ public class MainPresenter extends BasePresenter{
         }
         @Override
         public String getPresenterText() {
-            return "Failed to Unfollow";
+            return "Unfollow";
         }
     }
 
     public class FollowObserver extends BasePresenter implements SimpleNotificationObserver {
-        public FollowObserver(MainPresenter.View view) {
+        public FollowObserver(MainView view) {
             super(view);
         }
         @Override
@@ -146,7 +138,7 @@ public class MainPresenter extends BasePresenter{
     }
 
     public class IsFollower extends BasePresenter implements IsFollowerObserver {
-        public IsFollower(MainPresenter.View view) {
+        public IsFollower(MainView view) {
             super(view);
         }
         @Override

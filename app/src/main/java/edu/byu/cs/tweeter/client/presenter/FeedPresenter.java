@@ -6,7 +6,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 public class FeedPresenter extends PagedPresenter<Status>{
     @Override
     public String getPresenterText() {
-        return null;
+        return "Get Feed";
     }
     public FeedPresenter(PagedView view) {
         super(view);

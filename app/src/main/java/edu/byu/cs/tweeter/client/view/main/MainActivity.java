@@ -37,7 +37,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity implements StatusDialogFragment.Observer, MainPresenter.View {
+public class MainActivity extends AppCompatActivity implements StatusDialogFragment.Observer, MainPresenter.MainView {
 
     private static final String LOG_TAG = "MainActivity";
 
@@ -153,15 +153,12 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
 
     @Override
     public void onStatusPosted(String post) {
-        postingToast = Toast.makeText(this, "Posting Status...", Toast.LENGTH_LONG);
-        postingToast.show();
-
         try {
             Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), getFormattedDateTime(), parseURLs(post), parseMentions(post));
             presenter.postStatus(newStatus);
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage(), ex);
-            Toast.makeText(this, "Failed to post the status because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Failed to post the status because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

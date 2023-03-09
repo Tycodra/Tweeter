@@ -9,7 +9,7 @@ public class FollowingPresenter extends PagedPresenter<User>{
 
     @Override
     public String getPresenterText() {
-        return "GetFollowing";
+        return "Get Following";
     }
 
     @Override

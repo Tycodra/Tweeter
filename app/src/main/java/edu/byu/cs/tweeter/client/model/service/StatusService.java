@@ -8,12 +8,12 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PagedTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.PostStatusHandler;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PagedTaskObserver;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.PostStatusObserver;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.observer.StringNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class StatusService extends BackgroundTaskUtils {
-    public void postStatus(Status newStatus, PostStatusObserver observer) {
+    public void postStatus(Status newStatus, StringNotificationObserver observer) {
         PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
                 newStatus, new PostStatusHandler(observer));
         runTask(statusTask);
